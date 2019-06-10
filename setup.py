@@ -15,76 +15,86 @@ __version__ = '0.0.1'
 import getpass
 import sys
 import os
-try:
-    import urllib.request
-except:
-    pass
+import wget
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
+
 
 # -- Link per il download dei files utili --
-LINKPDFTOTEXT = 'https://drive.google.com/uc?export=download&id=19BTAN7mleq7yz2r48GaLPky_q_bvcEuJ'
+LINKPDFTOTEXTWIN = 'https://drive.google.com/uc?export=download&id=19BTAN7mleq7yz2r48GaLPky_q_bvcEuJ'
+LINKPDFTOTEXTMACOS = 'https://drive.google.com/uc?export=download&id=1ZkNeVEojpTKsL9EHwngbCfq4rdEtrx_u'
+
 LINKPDFCONVERTER = 'https://drive.google.com/uc?export=download&id=1ns3jBwMxglkSOLzNU4TzoHD3eI3flLVg'
 LINKDATACOLLECT = 'https://drive.google.com/uc?export=download&id=1uy_ZHjic5lbEK6bQNKTbiXYHXUfHPuWw'
 LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1gh7XkRDZTMo6bwtvXUWUbMquwfgDulvf'
 
 # Variabili globali 
 USERNAME = getpass.getuser()
-LIBRARIES = ['openpyxl', 'PySimpleGUI']
+LIBRARIES = ['openpyxl', 'PySimpleGUI', 'wget']
 
 PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
-PATHDOCUMENTSUNIX = '/home/' + USERNAME
-PATHDOCUMENTSMAC = '/Users/' + USERNAME
+PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
 
 PATHWIN32 = PATHDOCUMENTSWIN32 + '\\PdfConverter-DataAnalyzer'
-PATHUNIX = PATHDOCUMENTSUNIX + '/PdfConverter-DataAnalyzer'
-PATHMACOS = PATHDOCUMENTSMAC + '/Documents/PdfConverter-DataAnalyzer TEST'
+PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzer TEST'
 
 PATHSWIN = ['\\lib', '\\pdf','\\txt', '\\output']
-PATHSUNIX = ['/lib', '/pdf','/txt', '/output']
 PATHSMACOS = ['/lib', '/pdf','/txt', '/output']
 
 
-def downloadLibrariesUnix():
+def downloadUtilities():
     """
         Scarica tutte i file necessari per il corretto funzionamento del programma
     """
-    print('Download file necessari')
-    urllib.request.urlretrieve(LINKPDFCONVERTER, PATHUNIX + '/pdfConverter.py')
-    print('pdfConverter.py scaricato')
-    urllib.request.urlretrieve(LINKDATACOLLECT, PATHUNIX + '/dataCollect.py')
-    print('dataCollect.py scaricato')
-    urllib.request.urlretrieve(LINKEXPORTDATA, PATHUNIX + '/exportData.py')
-    print('exportData.py scaricato')
-
-
-def downloadLibrariesWin32():
-    """
-        Scarica tutte i file necessari per il corretto funzionamento del programma
-    """
-    print('Download file necessari')
-    urllib.request.urlretrieve(LINKPDFCONVERTER, PATHWIN32 + '\\pdfConverter.py')
-    print('pdfConverter.py scaricato')
-    urllib.request.urlretrieve(LINKDATACOLLECT, PATHWIN32 + '\\dataCollect.py')
-    print('dataCollect.py scaricato')
-    urllib.request.urlretrieve(LINKEXPORTDATA, PATHWIN32 + '\\exportData.py')
-    print('exportData.py scaricato')
     
+    print('[>] Download utilities')
+    
+    if sys.platform.__contains__('win32'):
+        print('[>] Download pdfConverter.py')
+        wget.download(LINKPDFCONVERTER, PATHWIN32 + '\\pdfConverter.py')
+        print('[+] pdfConverter.py scaricato')
+        print('[>] Download dataCollect.py')
+        wget.download(LINKDATACOLLECT, PATHWIN32 + '\\dataCollect.py')
+        print('[+] dataCollect.py scaricato')
+        print('[>] Download exportData.py')
+        wget.download(LINKEXPORTDATA, PATHWIN32 + '\\exportData.py')
+        print('[+] exportData.py scaricato')
+    else:
+        print('[>] Download pdftotext')
+        wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
+        print('[+] pdftotxt.exe scaricato')
+        print('[>] Download pdfConverter.py')
+        wget.download(LINKPDFCONVERTER, PATHMACOS + '/pdfConverter.py')
+        print('[+] pdfConverter.py scaricato')
+        print('[>] Download dataCollect.py')
+        wget.download(LINKDATACOLLECT, PATHMACOS + '/dataCollect.py')
+        print('[+] dataCollect.py scaricato')
+        print('[>] Download exportData.py')
+        wget.download(LINKEXPORTDATA, PATHMACOS + '/exportData.py')
+        print('[+] exportData.py scaricato')
 
+    
 
 def checkPyLib():
     """
         Controlla che tutte le librerie necessarie siano installate correttamente
     """
-    com_d = os.popen('python -m pip list --disable-pip-version-check')
+
+    print('\n--- Controllo librerie Python3 ---')
+
+    com_d = os.popen('python3 -m pip list --disable-pip-version-check')
     listd = com_d.read()
 
     for i in range(len(LIBRARIES)):
         if LIBRARIES[i] in listd:
-            print('Libreria ' + LIBRARIES[i] + ' già presente')
+            print('[+] Libreria ' + LIBRARIES[i] + ' già presente')
         else:
-            print('Download libreria ' + LIBRARIES[i])
-            os.system('python -m pip install ' + LIBRARIES[i] +
+            print('[>] Download libreria ' + LIBRARIES[i])
+            os.system('python3 -m pip install ' + LIBRARIES[i] +
                   ' -q --disable-pip-version-check')
-            print('Libreria ' + LIBRARIES[i] + ' installata')
+            print('[+] Libreria ' + LIBRARIES[i] + ' installata')
+
+    print('--- Controllo librerie completato ---')
 
 
 def checkFirstInstallationWin32():
@@ -99,7 +109,6 @@ def checkFirstInstallationWin32():
     dirTxt = False
     checkDir = False
     checkExe = False
-    checkLib = False
     checkpdfconverter = False
     checkdatacollect = False
     checkexportdata = False
@@ -146,7 +155,7 @@ def checkFirstInstallationWin32():
                     break
         
         if not checkExe:
-            urllib.request.urlretrieve(LINKPDFTOTEXT, PATHWIN32 + '\\lib\\pdftotxt.exe')
+            wget.download(LINKPDFTOTEXTWIN, PATHWIN32 + '\\lib\\pdftotxt.exe')
             print('pdftotxt.exe scaricato')
         
         checkPyLib()
@@ -160,16 +169,16 @@ def checkFirstInstallationWin32():
                 checkexportdata = True
 
         if checkpdfconverter is True and checkdatacollect is True and checkexportdata is True:
-            checkLib = True
+            pass
         else:
             if not checkpdfconverter:
-                urllib.request.urlretrieve(LINKPDFCONVERTER, PATHWIN32 + '\\pdfConverter.py')
+                wget.download(LINKPDFCONVERTER, PATHWIN32 + '\\pdfConverter.py')
                 print('pdfConverter.py scaricato')
             if not checkdatacollect:
-                urllib.request.urlretrieve(LINKDATACOLLECT, PATHWIN32 + '\\dataCollect.py')
+                wget.download(LINKDATACOLLECT, PATHWIN32 + '\\dataCollect.py')
                 print('dataCollect.py scaricato')
             if not checkexportdata:
-                urllib.request.urlretrieve(LINKEXPORTDATA, PATHWIN32 + '\\exportData.py')
+                wget.download(LINKEXPORTDATA, PATHWIN32 + '\\exportData.py')
                 print('exportData.py scaricato')
 
     else:
@@ -179,111 +188,17 @@ def checkFirstInstallationWin32():
         
         print('Tutte le cartelle create')
 
-        urllib.request.urlretrieve(LINKPDFTOTEXT, PATHWIN32 + '\\lib\\pdftotxt.exe')
+        wget.download(LINKPDFTOTEXTWIN, PATHWIN32 + '\\lib\\pdftotxt.exe')
         print('pdftotxt.exe scaricato')
 
         checkPyLib()
-        downloadLibrariesWin32()
-        
-
-def checkFirstInstallationUnix():
+        downloadUtilities()
     
-    dirPCDA = False
-    dirLib = False 
-    dirOut = False
-    dirPdf = False
-    dirTxt = False
-    checkDir = False
-    checkExe = False
-    checkLib = False
-    checkpdfconverter = False
-    checkdatacollect = False
-    checkexportdata = False
-
-    files = os.listdir(PATHDOCUMENTSUNIX)
-
-    for file in files:
-        if file == 'PdfConverter-DataAnalyzer':
-            print('Cartella Esistente')
-            dirPCDA = True
-
-    if dirPCDA:
-        print('Controllo files e directory esterne')
-        files = os.listdir(PATHUNIX)
-        
-        for file in files:
-            if file == 'lib':
-                dirLib = True
-            if file == 'pdf':
-                dirPdf = True
-            if file == 'txt':
-                dirTxt = True
-            if file == 'output':
-                dirOut = True
-        
-        if dirLib is True and dirPdf is True and dirTxt is True and dirOut is True:
-            checkDir = True
-            print('Tutte le cartelle esistenti')
-        else:
-            if not dirLib:
-                os.mkdir(PATHUNIX + '/lib')
-            if not dirPdf:
-                os.mkdir(PATHUNIX + '/pdf')
-            if not dirTxt:
-                os.mkdir(PATHUNIX + '/txt')
-            if not dirOut:
-                os.mkdir(PATHUNIX + '/output')
-
-        if checkDir:
-            fileExe = os.listdir(PATHUNIX + '/lib')
-            for file in fileExe:
-                if file == 'pdftotxt.exe':
-                    checkExe = True
-                    break
-        
-        if not checkExe:
-            urllib.request.urlretrieve(LINKPDFTOTEXT, PATHUNIX + '/lib/pdftotxt.exe')
-            print('pdftotxt.exe scaricato')
-        
-        checkPyLib()
-
-        for file in files:
-            if file == 'pdfConverter.py':
-                checkpdfconverter = True
-            if file == 'dataCollect.py':
-                checkdatacollect = True
-            if file == 'exportData.py':
-                checkexportdata = True
-
-        if checkpdfconverter is True and checkdatacollect is True and checkexportdata is True:
-            checkLib = True
-        else:
-            if not checkpdfconverter:
-                urllib.request.urlretrieve(LINKPDFCONVERTER, PATHUNIX + '//pdfConverter.py')
-                print('pdfConverter.py scaricato')
-            if not checkdatacollect:
-                urllib.request.urlretrieve(LINKDATACOLLECT, PATHUNIX + '//dataCollect.py')
-                print('dataCollect.py scaricato')
-            if not checkexportdata:
-                urllib.request.urlretrieve(LINKEXPORTDATA, PATHUNIX + '//exportData.py')
-                print('exportData.py scaricato')
-
-    else:
-        os.mkdir(PATHUNIX)
-        # for p in PATHSWIN:
-        os.system('cd PdfConverter-DataAnalyzer && mkdir test')
-        
-        print('Tutte le cartelle create')
-
-        urllib.request.urlretrieve(LINKPDFTOTEXT, PATHUNIX + '/lib/pdftotxt.exe')
-        print('pdftotxt.exe scaricato')
-
-        checkPyLib()
-        downloadLibrariesUnix()
-
 
 def checkFirstInstallationMac():
 
+    print('\n--- Controllo directory ---')
+
     dirPCDA = False
     dirLib = False 
     dirOut = False
@@ -291,7 +206,6 @@ def checkFirstInstallationMac():
     dirTxt = False
     checkDir = False
     checkExe = False
-    checkLib = False
     checkpdfconverter = False
     checkdatacollect = False
     checkexportdata = False
@@ -300,11 +214,12 @@ def checkFirstInstallationMac():
 
     for file in files:
         if file == 'PdfConverter-DataAnalyzer TEST':
-            print('Cartella Esistente')
+            print('[+] Cartella PdfConverter-DataAnalyzer TEST esistente')
             dirPCDA = True
+            break
 
     if dirPCDA:
-        print('Controllo files e directory esterne')
+        print('\n[>] Controllo files e directory')
         files = os.listdir(PATHMACOS)
         
         for file in files:
@@ -319,7 +234,7 @@ def checkFirstInstallationMac():
         
         if dirLib is True and dirPdf is True and dirTxt is True and dirOut is True:
             checkDir = True
-            print('Tutte le cartelle esistenti')
+            print('[+] Tutte le directory esistenti')
         else:
             if not dirLib:
                 os.mkdir(PATHMACOS + '/lib')
@@ -329,20 +244,22 @@ def checkFirstInstallationMac():
                 os.mkdir(PATHMACOS + '/txt')
             if not dirOut:
                 os.mkdir(PATHMACOS + '/output')
+            print('[+] Tutte le directory create')
 
+        print('\n[>] Controllo utilities')
         if checkDir:
             fileExe = os.listdir(PATHMACOS + '/lib')
             for file in fileExe:
-                if file == 'pdftotxt.exe':
+                if file == 'pdftotxt':
                     checkExe = True
                     break
         
         if not checkExe:
-            urllib.request.urlretrieve(LINKPDFTOTEXT, PATHMACOS + '/lib/pdftotxt.exe')
-            print('pdftotxt.exe scaricato')
-        
-        checkPyLib()
+            print('[>] Download pdftotext')
+            wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
+            print('[+] Libreria pdftotxt scaricata')
 
+        
         for file in files:
             if file == 'pdfConverter.py':
                 checkpdfconverter = True
@@ -352,39 +269,39 @@ def checkFirstInstallationMac():
                 checkexportdata = True
 
         if checkpdfconverter is True and checkdatacollect is True and checkexportdata is True:
-            checkLib = True
+            pass
+            print('[+] Controllo utilities completato')
         else:
             if not checkpdfconverter:
-                urllib.request.urlretrieve(LINKPDFCONVERTER, PATHMACOS + '/pdfConverter.py')
-                print('pdfConverter.py scaricato')
+                wget.download(LINKPDFCONVERTER, PATHMACOS + '/pdfConverter.py')
+                print('[+] pdfConverter.py scaricato')
             if not checkdatacollect:
-                urllib.request.urlretrieve(LINKDATACOLLECT, PATHMACOS + '/dataCollect.py')
-                print('dataCollect.py scaricato')
+                wget.download(LINKDATACOLLECT, PATHMACOS + '/dataCollect.py')
+                print('[+] dataCollect.py scaricato')
             if not checkexportdata:
-                urllib.request.urlretrieve(LINKEXPORTDATA, PATHMACOS + '/exportData.py')
-                print('exportData.py scaricato')
+                wget.download(LINKEXPORTDATA, PATHMACOS + '/exportData.py')
+                print('[+] exportData.py scaricato')
 
     else:
-        os.mkdir(PATHMACOS)
-        for p in PATHMACOS:
-            os.mkdir(PATHSMACOS + p)
+
+        print('[-] Cartella PdfConverter-DataAnalyzer TEST non esistente')
         
-        print('Tutte le cartelle create')
+        print('[>] Creazione delle cartelle in corso')
+        os.mkdir(PATHMACOS)
+        for p in PATHSMACOS:
+            os.mkdir(PATHMACOS + p)
+        
+        print('[+] Tutte le cartelle create\n[>] Download utilities in corso')
+        downloadUtilities()
+        print('[+] Download utilities completato')
 
-        urllib.request.urlretrieve(LINKPDFTOTEXT, PATHUNIX + '/lib/pdftotxt.exe')
-        print('pdftotxt.exe scaricato')
-
-        """
-        checkPyLib()
-        downloadLibrariesUnix()
-        """
+    print('--- Controllo directory completato ---\n\n--- Installazione completata ---')
 
 
-if __name__ == "__main__":    
+if __name__ == "__main__":
+    checkPyLib()    
     platform = sys.platform
     if platform.__contains__('win32'):
         checkFirstInstallationWin32()
-    elif platform.__contains__('linux'):
-        checkFirstInstallationUnix()
     else:
         checkFirstInstallationMac()
