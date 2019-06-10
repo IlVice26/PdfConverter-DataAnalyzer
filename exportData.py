@@ -13,6 +13,7 @@ import pdfConverter
 import dataCollect
 import openpyxl
 import time, datetime
+import sys
 
 
 targhe1 = dataCollect.targheEni
@@ -86,7 +87,7 @@ def exporttofile():
 
     ts = time.time()
     s = datetime.datetime.fromtimestamp(ts).strftime(('%d-%m-%Y_%H-%M-%S'))
-    exportname = 'export_' + s + '.xlsx'
+    exportname = 'output/export_' + s + '.xlsx'
 
     wb.save(exportname)
 
@@ -104,4 +105,4 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    print('Cioa')

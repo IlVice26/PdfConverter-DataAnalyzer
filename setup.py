@@ -36,7 +36,7 @@ PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
 PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
 
 PATHWIN32 = PATHDOCUMENTSWIN32 + '\\PdfConverter-DataAnalyzer'
-PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzer TEST'
+PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzerTEST'
 
 PATHSWIN = ['\\lib', '\\pdf','\\txt', '\\output']
 PATHSMACOS = ['/lib', '/pdf','/txt', '/output']
@@ -46,8 +46,6 @@ def downloadUtilities():
     """
         Scarica tutte i file necessari per il corretto funzionamento del programma
     """
-    
-    print('[>] Download utilities')
     
     if sys.platform.__contains__('win32'):
         print('[>] Download pdfConverter.py')
@@ -213,7 +211,7 @@ def checkFirstInstallationMac():
     files = os.listdir(PATHDOCUMENTSMAC)
 
     for file in files:
-        if file == 'PdfConverter-DataAnalyzer TEST':
+        if file == 'PdfConverter-DataAnalyzerTEST':
             print('[+] Cartella PdfConverter-DataAnalyzer TEST esistente')
             dirPCDA = True
             break
@@ -286,22 +284,28 @@ def checkFirstInstallationMac():
 
         print('[-] Cartella PdfConverter-DataAnalyzer TEST non esistente')
         
-        print('[>] Creazione delle cartelle in corso')
+        print('\n[>] Creazione delle cartelle in corso')
         os.mkdir(PATHMACOS)
         for p in PATHSMACOS:
             os.mkdir(PATHMACOS + p)
         
-        print('[+] Tutte le cartelle create\n[>] Download utilities in corso')
+        print('[+] Tutte le cartelle create\n\n[>] Download utilities in corso')
         downloadUtilities()
         print('[+] Download utilities completato')
+        os.system('chmod +x ' + PATHMACOS + '/lib/pdftotext')
 
     print('--- Controllo directory completato ---\n\n--- Installazione completata ---')
 
 
-if __name__ == "__main__":
+def main():
     checkPyLib()    
     platform = sys.platform
     if platform.__contains__('win32'):
         checkFirstInstallationWin32()
     else:
         checkFirstInstallationMac()
+        return True
+
+
+if __name__ == "__main__":
+    main()

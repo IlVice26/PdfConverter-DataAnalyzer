@@ -1,6 +1,6 @@
 """
     Convertitore in Python 3.7 di file PDF in file TXT
-    Lavoro svolto per l'azienda Fornace S.R.L
+    Lavoro svolto da Vicentini Elia per l'azienda Fornace S.R.L
 """
 
 __version__ = '0.0.1'

@@ -125,65 +125,36 @@ def datacollectesso():
 
 def datacollecteni():
     
-    # Riferimento al dizionario globale del programma
     global targheEni
     
-    # Apertura del file formattato
     file = open('txt\\eni_out.txt', 'r')
-    
-    # Variabile contenente tutte le righe del file
+
     lines = file.readlines()
 
-    # Lettura di ogni riga
     try:
         for line in lines:
-
-            # Controllo che la riga non sia un carattere di escape
             if not line == '\n':
-
-                # Controllo che la riga contenga 'Nr carta'
                 if line.__contains__('Nr carta'):
-
-                    # Prendo la parte della riga in cui è contenuta la targa
                     targa = line[-8:].replace('\n', '')
-
-                    # Lista che conterrà tutte le informazioni della targa
+                    
                     infotarga = []
-
-                    # Liste che conterranno tutte le date, ore e costi della benzina
                     date = []
                     ore = []
                     prezzi = []
-                    
-                    # Controllo le righe successive a quella della targa
-                    for i in range(1, len(lines)):
 
-                        # Variabile contenente la riga successiva
+                    for i in range(1, len(lines)):
                         newrow = str(lines.__getitem__(lines.index(line) + i)).split(' ')
-                        
-                        # Controllo che la riga successiva non sia la targa nuova
                         if not (newrow[0] == 'Nr' or newrow[0] == 'Totale'):    
-                            
-                            # Controllo che la riga successiva non sia un carattere di escape
-                            if not (newrow[0] == '\n'):    
-                                
-                                # Tolgo tutti gli spazi e aggiungo i dati ad una lista
+                            if not (newrow[0] == '\n'): 
                                 dataLine = []
                                 for j in range(len(newrow)):
                                     if not (newrow[j] == ''):
                                         dataLine.append(newrow[j])
-                                
-                                # Aggiunta alla lista della date la data
                                 date.append(dataLine[0])
-                                
-                                # Controllo e aggiunta alla lista delle ore, l'ora
                                 if dataLine[1] == 'F':
                                     ore.append(dataLine[2].replace('F', ''))
                                 else:
                                     ore.append(dataLine[1].replace('F', ''))
-
-                                
-                                # Controllo e aggiunta alla lista dei prezzi il costo della benzina
                                 tempPrezzo = dataLine[10].split(',')
                                 if (len(tempPrezzo) == 2):    
                                     if (len(tempPrezzo[0]) >= 2):
@@ -197,15 +168,11 @@ def datacollecteni():
                                         if (dataLine[j] == 'SELF'):
                                             prezzi.append(dataLine[j - 1])
                                             break
-
                         else:
-                            # Se la riga successiva si riferisce ad una targa nuova salvo i dati
                             infotarga.append(date)
                             infotarga.append(ore)
                             infotarga.append(prezzi)
                             infotarga.append('Eni')
-
-                            # Assegno i dati salvati alla targa
                             targheEni[targa] = infotarga
                             break
     except IndexError:
