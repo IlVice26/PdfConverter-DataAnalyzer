@@ -12,6 +12,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 import setupGui
+import pdfConverter
 
 
 class Ui_MainWindow(object):
@@ -89,6 +90,8 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAutore_progetto)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+
+        MainWindow.setSizePolicy(740, 390)
 
         self.pushButton_2.setEnabled(False)
         self.pushButton_3.setEnabled(False)
@@ -249,6 +252,7 @@ class Ui_MainWindow(object):
             msg.setWindowTitle("Errore")
             msg.exec_()
 
+        pdfConverter.start()
 
 
 if __name__ == "__main__":
