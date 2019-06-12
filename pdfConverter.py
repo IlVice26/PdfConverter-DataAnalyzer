@@ -11,54 +11,11 @@ import subprocess
 import time
 
 
-pathExe = 'lib\\pdftotext.exe'
+pathExe = 'lib/pdftotxt'
 filesToConvert = []
 isDirPdf = False
 isDirLib = False
 isDirTxt = False
-
-
-def ctrlfiles():
-    """
-        Controlla se sono presenti tutti file e le cartelle necessarie per il
-        corretto funzionamento
-    """
-    global isDirPdf, isDirLib, isDirTxt
-
-    canExport = True
-    files = os.listdir('.')
-
-    for i in range(len(files)):
-        if (files[i] == 'pdf'):
-            isDirPdf = True
-        if (files[i] == 'lib'):
-            isDirLib = True
-        if (files[i] == 'txt'):
-            isDirTxt = True
-
-    if not (isDirPdf):
-        print('Cartella pdf\\ creata')
-        os.mkdir('pdf')
-
-    if not (isDirTxt):
-        print('Cartella txt\\ creata')
-        os.mkdir('txt')
-
-    if (isDirLib):
-        files = os.listdir('lib')
-        for i in range(len(files)):
-            if not (files[i] == 'pdftotext.exe'):
-                canExport = False
-            else:
-                canExport = True
-    else:
-        canExport = False
-
-    files = os.listdir('txt\\')
-    for i in range(len(files)):
-        os.system('del txt\\' + files[i])
-
-    return canExport
 
 
 def converttotxt():
@@ -196,20 +153,16 @@ def start():
     """
         Avvio del servizio tramite exportData.py
     """
-    print('[>] Controllo file e directory in esecuzione')
-    if (ctrlfiles()):
-        print('[+] Controllo file e directory eseguito\n\n[>] Conversione pdf to txt in esecuzione')
-        converttotxt()
-        print('[+] Conversione pdf to txt eseguito')
+    converttotxt()
+    print('[+] Conversione pdf to txt eseguito')
 
-        print("\n[>] Formattazione dei file in esecuzione")
-        delrowseni()
-        delrowsunion()
-        delrowsesso()
-        print("[+] Formattazione dei file completata")
-    else:
-        print("\n[-] Errore: Cartella lib non trovata!")
-        exit(1)
+    print("\n[>] Formattazione dei file in esecuzione")
+    delrowseni()
+    delrowsunion()
+    delrowsesso()
+    print("[+] Formattazione dei file completata")
+    print("\n[-] Errore: Cartella lib non trovata!")
+    exit(1)
 
 
 if __name__ == "__main__":    

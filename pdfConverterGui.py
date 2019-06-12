@@ -1,19 +1,30 @@
 # -*- coding: utf-8 -*-
+"""
+    Gui per pdfConverter.py
+
+    Lavoro svolto da Vicentini Elia per l'azienda Fornace s.r.l
+"""
+
+import os
+import sys
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
-class Ui_MainWindow(object):
+import setupGui
 
+
+class Ui_MainWindow(object):
+    
+    files = []
+    filesName = []
+    aziende = []
     file = ''
     azienda = ''
-    filesName = []
-    files = []
-    aziende = []
-
+    
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(740, 380)
+        MainWindow.resize(740, 390)
         MainWindow.setWindowOpacity(1.0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -47,6 +58,9 @@ class Ui_MainWindow(object):
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_3.setGeometry(QtCore.QRect(20, 280, 241, 32))
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_4.setGeometry(QtCore.QRect(340, 310, 101, 31))
+        self.pushButton_4.setObjectName("pushButton_4")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 740, 22))
@@ -77,48 +91,16 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuHelp.menuAction())
 
         self.pushButton_2.setEnabled(False)
+        self.pushButton_3.setEnabled(False)
+        self.pushButton_4.setEnabled(False)
 
         self.pushButton.clicked.connect(self.get_file)
         self.pushButton_2.clicked.connect(self.save)
+        self.pushButton_3.clicked.connect(self.avviaConversione)
+        self.pushButton_4.clicked.connect(self.eliminaDaLista)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    def get_file(self):
-        name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf')
-        self.files.append(name[0])
-        tempName = str(name[0]).split('/')
-        self.file = tempName[-1]
-        self.filesName.append(self.file)
-        self.pushButton.setEnabled(False)
-        self.pushButton_2.setEnabled(True)
-        self.pushButton_2.update()
-
-    def save(self):
-
-        if self.file is '':
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Error")
-            msg.setInformativeText("Test")
-            msg.setWindowTitle("Error")
-            msg.exec_()
-            self.pushButton.setEnabled(True)
-            self.pushButton_2.setEnabled(False)
-        else:
-            self.azienda = self.comboBox.currentText()
-            self.aziende.append(self.azienda)
-
-            self.listWidget.clear()
-            self.listWidget_2.clear()
-            self.azienda = ''
-            self.file = ''
-
-            self.listWidget.addItems(self.filesName)
-            self.listWidget_2.addItems(self.aziende)
-
-            self.pushButton.setEnabled(True)
-            self.pushButton_2.setEnabled(False)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -132,6 +114,7 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "Esso"))
         self.comboBox.setItemText(2, _translate("MainWindow", "Union"))
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
+        self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
         self.menuFile.setTitle(_translate("MainWindow", "File"))
         self.menuHelp.setTitle(_translate("MainWindow", "Help"))
         self.actionGit.setText(_translate("MainWindow", "Git"))
@@ -139,15 +122,141 @@ class Ui_MainWindow(object):
         self.actionCome_funziona.setText(_translate("MainWindow", "Come funziona?"))
         self.actionAutore_progetto.setText(_translate("MainWindow", "Autore progetto"))
 
+    def get_file(self):
+        name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf')
+        tempN = name[0]
+        if not tempN is '':
+            self.files.append(name[0])
+            tempName = str(name[0]).split('/')
+            self.file = tempName[-1]
+            self.filesName.append(self.file)
+            self.pushButton.setEnabled(False)
+            self.pushButton_2.setEnabled(True)
+            self.pushButton_2.update()
+            self.pushButton.update()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Non hai selezionato alcun file!")
+            msg.setWindowTitle("Errore")
+            msg.exec_()
+
+    def save(self):
+        self.azienda = self.comboBox.currentText()
+        self.aziende.append(self.azienda)
+
+        self.listWidget.clear()
+        self.listWidget_2.clear()
+        self.azienda = ''
+        self.file = ''
+
+        self.listWidget.addItems(self.filesName)
+        self.listWidget_2.addItems(self.aziende)
+
+        self.pushButton.setEnabled(True)
+        self.pushButton_2.setEnabled(False)
+        self.pushButton_3.setEnabled(True)
+        self.pushButton_4.setEnabled(True)
+        self.pushButton.update()
+        self.pushButton_2.update()
+        self.pushButton_3.update()
+        self.pushButton_4.update()
+
+    def avviaConversione(self):
+
+        DizAziende = {}
+        DizAziende['Eni'] = []
+        DizAziende['Esso'] = []
+        DizAziende['Union'] = []
+
+        # Conto le aziende
+        for i in range(len(self.aziende)):
+            if self.aziende[i] == 'Eni':
+                DizAziende['Eni'].append(i)
+            if self.aziende[i] == 'Esso':
+                DizAziende['Esso'].append(i)
+            if self.aziende[i] == 'Union':
+                DizAziende['Union'].append(i)
+
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setText('Sei sicuro di convertire questi file?')
+        msg.setWindowTitle("Attenzione!")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        val = msg.exec_()
+        if val == 1024:
+            self.convertFiles(DizAziende)
+
+    def eliminaDaLista(self):
+        curItem = self.listWidget.currentRow()
+        self.listWidget.takeItem(curItem)
+        self.listWidget_2.takeItem(curItem)
+        del self.aziende[curItem]
+        del self.files[curItem]
+        del self.filesName[curItem]
+
+
+    def convertFiles(self, DizAziende):
+        PDFPATH = setupGui.PATHMACOS + '/pdf/'
+
+        lenEni = len(DizAziende['Eni'])
+        lenEsso = len(DizAziende['Esso'])
+        lenUnion = len(DizAziende['Union'])
+
+        test = os.listdir(PDFPATH)
+        for i in range(len(test)):
+            os.popen('rm ' + PDFPATH + test[i])
+        
+        try:
+            if not lenEni is 0:
+                for i in range(lenEni):
+                    path = str(self.files[DizAziende['Eni'][i]])
+                    temp = path.split('/')
+                    cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf'
+                    os.system(cmdRename)
+                    cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf' + ' ' + PDFPATH + 'eni' + str(i) + '.pdf'
+                    os.system(cmdFinal)
+            else:
+                pass
+
+            if not lenEsso is 0:
+                for i in range(lenEsso):
+                    path = str(self.files[DizAziende['Esso'][i]])
+                    temp = path.split('/')
+                    cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf'
+                    os.system(cmdRename)
+                    cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf' + ' ' + PDFPATH + 'esso' + str(i) + '.pdf'
+                    os.system(cmdFinal)
+            else:
+                pass
+
+            if not lenUnion is 0:
+                for i in range(lenUnion):
+                    path = str(self.files[DizAziende['Union'][i]])
+                    temp = path.split('/')
+                    cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf'
+                    os.popen(cmdRename)
+                    cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf' + ' ' + PDFPATH + 'union' + str(i) + '.pdf'
+                    os.popen(cmdFinal)
+            else:
+                pass
+        except Exception:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("C'è stato un errore durante lo spostamento dei file!")
+            msg.setWindowTitle("Errore")
+            msg.exec_()
 
 
 
 if __name__ == "__main__":
     import sys
+    setupGui.setData()
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
-    MainWindow.update()
     sys.exit(app.exec_())

@@ -19,7 +19,7 @@ LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1gh7XkRDZTMo6bw
 
 # Variabili globali 
 USERNAME = getpass.getuser()
-LIBRARIES = ['openpyxl', 'PySimpleGUI', 'wget']
+LIBRARIES = ['openpyxl', 'PySimpleGUI', 'wget', 'PyQt5', 'sip']
 
 PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
 PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
@@ -92,16 +92,12 @@ class Ui_MainWindow(object):
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
 
     def main(self):
+        
         self.checkPyLib()
-        print('Check librerie fatto')
         self.checkFirstInstallationMac()
-        print('Check directory fatto')
         self.progressBar.setValue(100)
-        self.progressBar.update
-        if self.progressBar.value() is 100:
-            print("Continua")
     
-    def downloadUtilities():
+    def downloadUtilities(self):
         """
             Scarica tutte i file necessari per il corretto funzionamento del programma
         """
@@ -208,15 +204,13 @@ class Ui_MainWindow(object):
             os.mkdir(PATHMACOS)
             for p in PATHSMACOS:
                 os.mkdir(PATHMACOS + p)
-            downloadUtilities()
-            os.system('chmod +x ' + PATHMACOS + '/lib/pdftotext')
+            self.downloadUtilities()
+            os.popen('chmod +x ' + PATHMACOS + '/lib/pdftotxt')
 
-
-if __name__ == "__main__":
+def setData():
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)
     MainWindow.show()
     ui.main()
-    sys.exit(app.exec_())
