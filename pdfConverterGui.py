@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 class Ui_MainWindow(object):
 
@@ -90,26 +90,35 @@ class Ui_MainWindow(object):
         tempName = str(name[0]).split('/')
         self.file = tempName[-1]
         self.filesName.append(self.file)
-        print(self.file)
-        print(self.files)
         self.pushButton.setEnabled(False)
         self.pushButton_2.setEnabled(True)
         self.pushButton_2.update()
 
     def save(self):
-        self.azienda = self.comboBox.currentText()
-        self.aziende.append(self.azienda)
 
-        self.listWidget.clear()
-        self.listWidget_2.clear()
-        self.azienda = ''
-        self.file = ''
+        if self.file is '':
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Error")
+            msg.setInformativeText("Test")
+            msg.setWindowTitle("Error")
+            msg.exec_()
+            self.pushButton.setEnabled(True)
+            self.pushButton_2.setEnabled(False)
+        else:
+            self.azienda = self.comboBox.currentText()
+            self.aziende.append(self.azienda)
 
-        self.listWidget.addItems(self.filesName)
-        self.listWidget_2.addItems(self.aziende)
+            self.listWidget.clear()
+            self.listWidget_2.clear()
+            self.azienda = ''
+            self.file = ''
 
-        self.pushButton.setEnabled(True)
-        self.pushButton_2.setEnabled(False)
+            self.listWidget.addItems(self.filesName)
+            self.listWidget_2.addItems(self.aziende)
+
+            self.pushButton.setEnabled(True)
+            self.pushButton_2.setEnabled(False)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
