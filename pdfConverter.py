@@ -9,8 +9,12 @@ __author__ = 'Vicentini Elia'
 import os
 import subprocess
 import time
+import setupGui
 
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
+pathPdf = setupGui.PATHMACOS
 pathExe = 'lib/pdftotxt'
 filesToConvert = []
 isDirPdf = False
@@ -24,8 +28,8 @@ def converttotxt():
         in file TXT
     """
     # Lista contenenti tutti i nomi dei file
-    files = os.listdir('pdf')
-    
+    files = list(os.listdir(pathPdf + '/pdf'))
+
     # Controllo numero file
     if len(files) is 0:
         print("[-] Nessun file trovato nella cartella pdf")
@@ -41,10 +45,16 @@ def converttotxt():
         try:
             temp = filesToConvert[i].split('.')
             name = temp[0] + ".txt"
-            subprocess.Popen(pathExe + " -table pdf\\" + filesToConvert[i] + " txt\\" + name)
+            os.system(pathExe + " -table pdf/" + filesToConvert[i] + " txt/" + name)
             time.sleep(1)
         except PermissionError:
-            print("[-] Errore, un file non può essere convertito!")
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Il file " + filesToConvert[i] + ' non può essere convertito!')
+            msg.setWindowTitle("Errore")
+            test = msg.exec_()
+            print(test)
 
 
 def tostring(list):
@@ -62,30 +72,47 @@ def delrowseni():
         Sistema il file eni.txt con le righe in cui sono presenti i dati
         essenziali
     """
-    file = open('txt\\eni.txt', 'r')
-    file_out = open('txt\\eni_out.txt', 'w')
-
-    lines = file.readlines()
-
-    rows = []
-
-    for line in lines:
-        temp1 = line.split('    ')
-        if temp1[0].__contains__('Nr carta') or temp1[0].__contains__('.'):
-            if temp1[0].__contains__('Nr carta'):
-                rows.append(tostring(temp1) + '\n')
-            if temp1[0].__contains__('.'):
-                temp2 = temp1[0].split('.')
-                try:
-                    int(temp2[0])
-                    rows.append(tostring(temp1) + '\n')
-                except ValueError:
-                    pass
     
-    file_out.writelines(rows)
-    file_out.close()
-    file.close()
-    os.system('del txt\\eni.txt')
+    canDelRows = False
+    filesToTrasform = []
+
+    files = os.listdir('txt')
+
+    for file in files:
+        if file.__contains__('eni'):
+            filesToTrasform.append(file)
+            canDelRows = True
+
+    if canDelRows:
+        for filet in filesToTrasform:
+            temp6 = filet.split('.')
+            nameTransformed = temp6[0]   
+            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
+
+            lines = file.readlines()
+
+            rows = []
+
+            for line in lines:
+                temp1 = line.split('    ')
+                if temp1[0].__contains__('Nr carta') or temp1[0].__contains__('.'):
+                    if temp1[0].__contains__('Nr carta'):
+                        rows.append(tostring(temp1) + '\n')
+                    if temp1[0].__contains__('.'):
+                        temp2 = temp1[0].split('.')
+                        try:
+                            int(temp2[0])
+                            rows.append(tostring(temp1) + '\n')
+                        except ValueError:
+                            pass
+            
+            file_out.writelines(rows)
+            file_out.close()
+            file.close()
+            os.system('rm txt/' + nameTransformed + '.txt')
+    else:
+        pass
 
 
 def delrowsunion():
@@ -93,30 +120,46 @@ def delrowsunion():
         Sistema il file union.txt con le righe in cui sono presenti i dati
         essenziali
     """
-    file = open('txt\\union.txt', 'r')
-    file_out = open('txt\\union_out.txt', 'w')
+    canDelRows = False
+    filesToTrasform = []
 
-    rows = []
+    files = os.listdir('txt')
 
-    lines = file.readlines()
-    
-    for line in lines:
-        temp1 = line.split('        ')
-        if not temp1[0] == '\n':
-            if temp1[0].__contains__('Targa: '):
-                rows.append(tostring(temp1) + '\n')
-            if temp1[0].__contains__('.'):
-                try:
-                    temp2 = temp1[0].split('.')
-                    int(temp2[0])
-                    rows.append(tostring(temp1) + '\n')
-                except Exception:
-                    pass
-    
-    file_out.writelines(rows)
-    file_out.close()
-    file.close()
-    os.system('del txt\\union.txt')
+    for file in files:
+        if file.__contains__('union'):
+            filesToTrasform.append(file)
+            canDelRows = True
+
+    if canDelRows:
+        for filet in filesToTrasform:
+            temp6 = filet.split('.')
+            nameTransformed = temp6[0]   
+            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
+
+            rows = []
+
+            lines = file.readlines()
+            
+            for line in lines:
+                temp1 = line.split('        ')
+                if not temp1[0] == '\n':
+                    if temp1[0].__contains__('Targa: '):
+                        rows.append(tostring(temp1) + '\n')
+                    if temp1[0].__contains__('.'):
+                        try:
+                            temp2 = temp1[0].split('.')
+                            int(temp2[0])
+                            rows.append(tostring(temp1) + '\n')
+                        except Exception:
+                            pass
+            
+            file_out.writelines(rows)
+            file_out.close()
+            file.close()
+            os.system('rm txt/' + nameTransformed + '.txt')
+    else:
+        pass
 
 
 def delrowsesso():
@@ -124,22 +167,38 @@ def delrowsesso():
         Sistema il file esso.txt con le righe in cui sono presenti i dati
         essenziali
     """
-    file = open('txt\\esso.txt', 'r')
-    file_out = open('txt\\esso_out.txt', 'w')
+    canDelRows = False
+    filesToTrasform = []
 
-    rows = []
+    files = os.listdir('txt')
 
-    lines = file.readlines()
+    for file in files:
+        if file.__contains__('esso'):
+            filesToTrasform.append(file)
+            canDelRows = True
 
-    for line in lines:
-        if (line.__contains__('gasolio') or line.__contains__('E-DIESEL') or line.__contains__('scontrino')):
-            rows.append(line)
+    if canDelRows:
+        for filet in filesToTrasform:
+            temp6 = filet.split('.')
+            nameTransformed = temp6[0]
+            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
 
-    file_out.writelines(rows)
-    file_out.close()
-    file.close()
-    os.system('del txt\\esso.txt')
 
+            rows = []
+
+            lines = file.readlines()
+
+            for line in lines:
+                if (line.__contains__('gasolio') or line.__contains__('E-DIESEL') or line.__contains__('scontrino')):
+                    rows.append(line)
+
+            file_out.writelines(rows)
+            file_out.close()
+            file.close()
+            os.system('rm txt/' + nameTransformed + '.txt')
+    else:
+        pass
 
 def checkfileclosed(file):
     """
@@ -154,15 +213,10 @@ def start():
         Avvio del servizio tramite exportData.py
     """
     converttotxt()
-    print('[+] Conversione pdf to txt eseguito')
 
-    print("\n[>] Formattazione dei file in esecuzione")
     delrowseni()
     delrowsunion()
     delrowsesso()
-    print("[+] Formattazione dei file completata")
-    print("\n[-] Errore: Cartella lib non trovata!")
-    exit(1)
 
 
 if __name__ == "__main__":    

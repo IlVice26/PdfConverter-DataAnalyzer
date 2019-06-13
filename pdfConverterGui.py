@@ -13,6 +13,8 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 import setupGui
 import pdfConverter
+import dataCollect
+import exportData
 
 
 class Ui_MainWindow(object):
@@ -90,8 +92,6 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAutore_progetto)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
-
-        MainWindow.setSizePolicy(740, 390)
 
         self.pushButton_2.setEnabled(False)
         self.pushButton_3.setEnabled(False)
@@ -211,6 +211,10 @@ class Ui_MainWindow(object):
         for i in range(len(test)):
             os.popen('rm ' + PDFPATH + test[i])
         
+        test = os.listdir(setupGui.PATHMACOS + '/txt/')
+        for file in test:
+            os.popen('rm ' + setupGui.PATHMACOS + '/txt/' + file)
+
         try:
             if not lenEni is 0:
                 for i in range(lenEni):
@@ -253,6 +257,17 @@ class Ui_MainWindow(object):
             msg.exec_()
 
         pdfConverter.start()
+        dataCollect.start()
+        exportData.exporttofile()
+
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Conversione completata!")
+        msg.setWindowTitle("Fine conversione")
+        msg.exec_()
+
+        self.listWidget.clear()
+        self.listWidget_2.clear()
 
 
 if __name__ == "__main__":
