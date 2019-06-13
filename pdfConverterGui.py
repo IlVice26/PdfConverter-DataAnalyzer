@@ -7,11 +7,11 @@
 
 import os
 import sys
+import setupGui
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
-import setupGui
 import pdfConverter
 import dataCollect
 import exportData
@@ -271,8 +271,6 @@ class Ui_MainWindow(object):
 
 
 if __name__ == "__main__":
-    import sys
-    setupGui.setData()
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()

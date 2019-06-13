@@ -13,6 +13,7 @@ import pdfConverter
 import dataCollect
 import openpyxl
 import time, datetime
+import setupGui
 
 
 targhe1 = dataCollect.targheEni
@@ -88,7 +89,7 @@ def exporttofile():
     s = datetime.datetime.fromtimestamp(ts).strftime(('%d-%m-%Y_%H-%M-%S'))
     exportname = 'export_' + s + '.xlsx'
 
-    wb.save('output/' + exportname)
+    wb.save(setupGui.PATHMACOS +'/output/' + exportname)
 
 
 def main():

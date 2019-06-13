@@ -13,13 +13,13 @@ ssl._create_default_https_context = ssl._create_unverified_context
 LINKPDFTOTEXTWIN = 'https://drive.google.com/uc?export=download&id=19BTAN7mleq7yz2r48GaLPky_q_bvcEuJ'
 LINKPDFTOTEXTMACOS = 'https://drive.google.com/uc?export=download&id=1ZkNeVEojpTKsL9EHwngbCfq4rdEtrx_u'
 
-LINKPDFCONVERTER = 'https://drive.google.com/uc?export=download&id=1ns3jBwMxglkSOLzNU4TzoHD3eI3flLVg'
-LINKDATACOLLECT = 'https://drive.google.com/uc?export=download&id=1uy_ZHjic5lbEK6bQNKTbiXYHXUfHPuWw'
-LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1gh7XkRDZTMo6bwtvXUWUbMquwfgDulvf'
+LINKPDFCONVERTER = 'https://drive.google.com/uc?export=download&id=1s12uY0E-Ulm25VK01GreOqToIf44OnR2'
+LINKDATACOLLECT = 'https://drive.google.com/uc?export=download&id=1rG_mkqBJG5lenH__0TlZGDoobV0TM-k2'
+LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1pumNIhno0va777itjC3FGTHEEvPeBUsO'
 
 # Variabili globali 
 USERNAME = getpass.getuser()
-LIBRARIES = ['openpyxl', 'PySimpleGUI', 'wget', 'PyQt5', 'sip']
+LIBRARIES = ['openpyxl', 'wget', 'PyQt5', 'sip']
 
 PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
 PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
@@ -207,10 +207,10 @@ class Ui_MainWindow(object):
             self.downloadUtilities()
             os.popen('chmod +x ' + PATHMACOS + '/lib/pdftotxt')
 
-def setData():
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    ui.main()
+
+app = QtWidgets.QApplication(sys.argv)
+MainWindow = QtWidgets.QMainWindow()
+ui = Ui_MainWindow()
+ui.setupUi(MainWindow)
+ui.main()
+MainWindow.show()

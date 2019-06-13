@@ -15,7 +15,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
 
 pathPdf = setupGui.PATHMACOS
-pathExe = 'lib/pdftotxt'
+pathExe = setupGui.PATHMACOS + '/lib/pdftotxt'
 filesToConvert = []
 isDirPdf = False
 isDirLib = False
@@ -28,7 +28,8 @@ def converttotxt():
         in file TXT
     """
     # Lista contenenti tutti i nomi dei file
-    files = list(os.listdir(pathPdf + '/pdf'))
+    time.sleep(2)
+    files = os.listdir(pathPdf + '/pdf')
 
     # Controllo numero file
     if len(files) is 0:
@@ -45,16 +46,10 @@ def converttotxt():
         try:
             temp = filesToConvert[i].split('.')
             name = temp[0] + ".txt"
-            os.system(pathExe + " -table pdf/" + filesToConvert[i] + " txt/" + name)
+            os.system(pathExe + " -table " + pathPdf +  "/pdf/" + filesToConvert[i] + " " + pathPdf +"/txt/" + name)
             time.sleep(1)
         except PermissionError:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Errore")
-            msg.setInformativeText("Il file " + filesToConvert[i] + ' non può essere convertito!')
-            msg.setWindowTitle("Errore")
-            test = msg.exec_()
-            print(test)
+            pass
 
 
 def tostring(list):
@@ -76,7 +71,7 @@ def delrowseni():
     canDelRows = False
     filesToTrasform = []
 
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt')
 
     for file in files:
         if file.__contains__('eni'):
@@ -87,8 +82,8 @@ def delrowseni():
         for filet in filesToTrasform:
             temp6 = filet.split('.')
             nameTransformed = temp6[0]   
-            file = open('txt/' + filet, 'r', errors = 'ignore')
-            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
+            file_out = open(setupGui.PATHMACOS + '/txt/' + nameTransformed + '_out.txt', 'w')
 
             lines = file.readlines()
 
@@ -110,7 +105,7 @@ def delrowseni():
             file_out.writelines(rows)
             file_out.close()
             file.close()
-            os.system('rm txt/' + nameTransformed + '.txt')
+            os.system('rm ' + setupGui.PATHMACOS + '/txt/' + nameTransformed + '.txt')
     else:
         pass
 
@@ -123,7 +118,7 @@ def delrowsunion():
     canDelRows = False
     filesToTrasform = []
 
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt')
 
     for file in files:
         if file.__contains__('union'):
@@ -134,8 +129,8 @@ def delrowsunion():
         for filet in filesToTrasform:
             temp6 = filet.split('.')
             nameTransformed = temp6[0]   
-            file = open('txt/' + filet, 'r', errors = 'ignore')
-            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
+            file_out = open(setupGui.PATHMACOS + '/txt/' + nameTransformed + '_out.txt', 'w')
 
             rows = []
 
@@ -157,7 +152,7 @@ def delrowsunion():
             file_out.writelines(rows)
             file_out.close()
             file.close()
-            os.system('rm txt/' + nameTransformed + '.txt')
+            os.system('rm ' + setupGui.PATHMACOS + '/txt/' + nameTransformed + '.txt')
     else:
         pass
 
@@ -170,7 +165,7 @@ def delrowsesso():
     canDelRows = False
     filesToTrasform = []
 
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt')
 
     for file in files:
         if file.__contains__('esso'):
@@ -181,9 +176,8 @@ def delrowsesso():
         for filet in filesToTrasform:
             temp6 = filet.split('.')
             nameTransformed = temp6[0]
-            file = open('txt/' + filet, 'r', errors = 'ignore')
-            file_out = open('txt/' + nameTransformed + '_out.txt', 'w')
-
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
+            file_out = open(setupGui.PATHMACOS + '/txt/' + nameTransformed + '_out.txt', 'w')
 
             rows = []
 
@@ -196,7 +190,7 @@ def delrowsesso():
             file_out.writelines(rows)
             file_out.close()
             file.close()
-            os.system('rm txt/' + nameTransformed + '.txt')
+            os.system('rm ' + setupGui.PATHMACOS + '/txt/' + nameTransformed + '.txt')
     else:
         pass
 

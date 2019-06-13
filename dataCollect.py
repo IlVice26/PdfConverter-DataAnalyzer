@@ -4,6 +4,7 @@
 """
 
 import os
+import setupGui
 
 __version__ = '0.0.1'
 __author__ = 'Vicentini Elia'
@@ -23,7 +24,7 @@ def datacollectunion():
 
     canCollect = False
     
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt/')
 
     for file in files:
         if file.__contains__('union'):
@@ -33,7 +34,7 @@ def datacollectunion():
 
     if canCollect:
         for filet in filesToCollect:
-            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
 
             lines = file.readlines()
             
@@ -76,7 +77,7 @@ def datacollectesso():
     filesToCollect = []
     canCollect = False
     
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt/')
 
     for file in files:
         if file.__contains__('esso'):
@@ -85,7 +86,7 @@ def datacollectesso():
 
     if canCollect:
         for filet in filesToCollect:
-            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
 
             lines = file.readlines()
             targa = ""
@@ -163,7 +164,7 @@ def datacollecteni():
 
     canCollect = False
     
-    files = os.listdir('txt')
+    files = os.listdir(setupGui.PATHMACOS + '/txt/')
 
     for file in files:
         if file.__contains__('eni'):
@@ -173,7 +174,7 @@ def datacollecteni():
 
     if canCollect:
         for filet in filesToCollect:
-            file = open('txt/' + filet, 'r', errors = 'ignore')
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
 
             lines = file.readlines()
 
