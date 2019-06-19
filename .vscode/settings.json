@@ -1,6 +1,0 @@
-{
-    "python.pythonPath": "/usr/local/bin/python3",
-    "explorer.sortOrder":"modified",
-    "python.linting.pylintArgs": ["--extension-pkg-whitelist=PyQt5"],
-    "python.linting.pylintEnabled": false
-}

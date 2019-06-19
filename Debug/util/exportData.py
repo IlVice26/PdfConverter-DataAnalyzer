@@ -9,8 +9,8 @@
 __version__ = '0.0.1'
 __author__ = 'Vicentini Elia'
 
-import pdfConverter
-import dataCollect
+import util.pdfConverter as pdfConverter
+import util.dataCollect as dataCollect
 import openpyxl
 import time, datetime
 import setupGui

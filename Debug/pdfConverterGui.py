@@ -7,14 +7,14 @@
 
 import os
 import sys
-import setupGui
 
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog
 
-import pdfConverter
-import dataCollect
-import exportData
+from util import setupGui
+from util import pdfConverter
+from util import dataCollect
+from util import exportData
 
 
 class Ui_MainWindow(object):
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Pdf Converter & Data Analyzer v. 0.0.1"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Pdf Converter & Data Analyzer"))
         self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; font-style:italic;\">Pdf Converter &amp; Data Analyzer </span><span style=\" font-size:24pt; font-weight:600; font-style:italic; vertical-align:sub;\">by Vicentini Elia</span></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "File pronti per la conversione"))
         self.pushButton.setText(_translate("MainWindow", "Seleziona file"))

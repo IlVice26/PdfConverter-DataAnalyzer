@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+Gui Setup.py
+"""
 
-from PyQt5 import QtCore, QtGui, QtWidgets
 import getpass
 import sys
 import os
-import wget
 import ssl
-import time
+from PyQt5 import QtCore, QtWidgets
+from lib.Wget import wget
 ssl._create_default_https_context = ssl._create_unverified_context
+
 
 # -- Link per il download dei files utili --
 LINKPDFTOTEXTWIN = 'https://drive.google.com/uc?export=download&id=19BTAN7mleq7yz2r48GaLPky_q_bvcEuJ'
@@ -213,4 +216,5 @@ MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 ui.main()
-MainWindow.show()
+
+

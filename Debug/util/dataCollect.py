@@ -4,7 +4,7 @@
 """
 
 import os
-import setupGui
+import util.setupGui as setupGui
 
 __version__ = '0.0.1'
 __author__ = 'Vicentini Elia'

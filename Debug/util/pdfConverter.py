@@ -9,7 +9,7 @@ __author__ = 'Vicentini Elia'
 import os
 import subprocess
 import time
-import setupGui
+import util.setupGui as setupGui
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
@@ -17,9 +17,6 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 pathPdf = setupGui.PATHMACOS
 pathExe = setupGui.PATHMACOS + '/lib/pdftotxt'
 filesToConvert = []
-isDirPdf = False
-isDirLib = False
-isDirTxt = False
 
 
 def converttotxt():
