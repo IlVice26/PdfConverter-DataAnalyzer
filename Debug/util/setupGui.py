@@ -22,13 +22,13 @@ LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1pumNIhno0va777
 
 # Variabili globali 
 USERNAME = getpass.getuser()
-LIBRARIES = ['openpyxl', 'wget', 'PyQt5', 'sip']
+LIBRARIES = ['openpyxl', 'PyQt5']
 
 PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
 PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
 
 PATHWIN32 = PATHDOCUMENTSWIN32 + '\\PdfConverter-DataAnalyzer'
-PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzerTEST'
+PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzer'
 
 PATHSWIN = ['\\lib', '\\pdf','\\txt', '\\output']
 PATHSMACOS = ['/lib', '/pdf','/txt', '/output']
@@ -146,7 +146,7 @@ class Ui_MainWindow(object):
         files = os.listdir(PATHDOCUMENTSMAC)
 
         for file in files:
-            if file == 'PdfConverter-DataAnalyzerTEST':
+            if file == 'PdfConverter-DataAnalyzer':
                 dirPCDA = True
                 break
 
