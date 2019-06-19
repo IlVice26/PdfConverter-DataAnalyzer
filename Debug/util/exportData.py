@@ -13,7 +13,7 @@ import util.pdfConverter as pdfConverter
 import util.dataCollect as dataCollect
 import openpyxl
 import time, datetime
-import setupGui
+import util.setupGui as setupGui
 
 
 targhe1 = dataCollect.targheEni
