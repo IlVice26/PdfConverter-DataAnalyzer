@@ -2,11 +2,12 @@
 """
     Gui per pdfConverter.py
 
-    Lavoro svolto da Vicentini Elia per l'azienda Fornace s.r.l
+    Lavoro svolto da Vicentini Elia
 """
 
 import os
 import sys
+import webbrowser
 
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog
@@ -70,8 +71,6 @@ class Ui_MainWindow(object):
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
-        self.menuHelp = QtWidgets.QMenu(self.menubar)
-        self.menuHelp.setObjectName("menuHelp")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -80,23 +79,21 @@ class Ui_MainWindow(object):
         self.actionGit.setObjectName("actionGit")
         self.actionEsci = QtWidgets.QAction(MainWindow)
         self.actionEsci.setObjectName("actionEsci")
-        self.actionCome_funziona = QtWidgets.QAction(MainWindow)
-        self.actionCome_funziona.setObjectName("actionCome_funziona")
         self.actionAutore_progetto = QtWidgets.QAction(MainWindow)
         self.actionAutore_progetto.setObjectName("actionAutore_progetto")
         self.menuFile.addAction(self.actionGit)
+        self.menuFile.addAction(self.actionAutore_progetto)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEsci)
-        self.menuHelp.addAction(self.actionCome_funziona)
-        self.menuHelp.addSeparator()
-        self.menuHelp.addAction(self.actionAutore_progetto)
         self.menubar.addAction(self.menuFile.menuAction())
-        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.pushButton_2.setEnabled(False)
         self.pushButton_3.setEnabled(False)
         self.pushButton_4.setEnabled(False)
 
+        self.actionAutore_progetto.triggered.connect(self.openAutoreProgetto)
+        self.actionGit.triggered.connect(self.openGitPage)
+        self.actionEsci.triggered.connect(self.closeWindow)
         self.pushButton.clicked.connect(self.get_file)
         self.pushButton_2.clicked.connect(self.save)
         self.pushButton_3.clicked.connect(self.avviaConversione)
@@ -104,6 +101,15 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def openAutoreProgetto(self):
+        webbrowser.open_new_tab('https://www.instagram.com/eliavicentiniii/')
+
+    def openGitPage(self):
+        webbrowser.open_new_tab('https://gitlab.com/furnax/stage/pdfconverter-dataanalyzer')
+
+    def closeWindow(self):
+        MainWindow.close()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -118,11 +124,9 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(2, _translate("MainWindow", "Union"))
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
         self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
-        self.menuFile.setTitle(_translate("MainWindow", "File"))
-        self.menuHelp.setTitle(_translate("MainWindow", "Help"))
+        self.menuFile.setTitle(_translate("MainWindow", "Info"))
         self.actionGit.setText(_translate("MainWindow", "Git"))
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
-        self.actionCome_funziona.setText(_translate("MainWindow", "Come funziona?"))
         self.actionAutore_progetto.setText(_translate("MainWindow", "Autore progetto"))
 
     def get_file(self):

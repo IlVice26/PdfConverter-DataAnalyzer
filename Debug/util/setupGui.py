@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Gui Setup.py
+    Gui Setup.py
 """
 
 import getpass
@@ -16,13 +16,8 @@ ssl._create_default_https_context = ssl._create_unverified_context
 LINKPDFTOTEXTWIN = 'https://drive.google.com/uc?export=download&id=19BTAN7mleq7yz2r48GaLPky_q_bvcEuJ'
 LINKPDFTOTEXTMACOS = 'https://drive.google.com/uc?export=download&id=1ZkNeVEojpTKsL9EHwngbCfq4rdEtrx_u'
 
-LINKPDFCONVERTER = 'https://drive.google.com/uc?export=download&id=1s12uY0E-Ulm25VK01GreOqToIf44OnR2'
-LINKDATACOLLECT = 'https://drive.google.com/uc?export=download&id=1rG_mkqBJG5lenH__0TlZGDoobV0TM-k2'
-LINKEXPORTDATA = 'https://drive.google.com/uc?export=download&id=1pumNIhno0va777itjC3FGTHEEvPeBUsO'
-
 # Variabili globali 
 USERNAME = getpass.getuser()
-LIBRARIES = ['openpyxl', 'PyQt5']
 
 PATHDOCUMENTSWIN32 = 'C:\\Users\\' + USERNAME + '\\Documents'
 PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
@@ -95,40 +90,20 @@ class Ui_MainWindow(object):
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
 
     def main(self):
-        
-        self.checkPyLib()
         self.checkFirstInstallationMac()
         self.progressBar.setValue(100)
     
+
     def downloadUtilities(self):
         """
             Scarica tutte i file necessari per il corretto funzionamento del programma
         """
         
         if sys.platform.__contains__('win32'):
-            wget.download(LINKPDFCONVERTER, PATHWIN32 + '\\pdfConverter.py')
-            wget.download(LINKDATACOLLECT, PATHWIN32 + '\\dataCollect.py')
-            wget.download(LINKEXPORTDATA, PATHWIN32 + '\\exportData.py')
+            pass
         else:
             wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
-            wget.download(LINKPDFCONVERTER, PATHMACOS + '/pdfConverter.py')
-            wget.download(LINKDATACOLLECT, PATHMACOS + '/dataCollect.py')
-            wget.download(LINKEXPORTDATA, PATHMACOS + '/exportData.py')
 
-    def checkPyLib(self):
-        """
-            Controlla che tutte le librerie necessarie siano installate correttamente
-        """
-
-        com_d = os.popen('python3 -m pip list --disable-pip-version-check')
-        listd = com_d.read()
-
-        for i in range(len(LIBRARIES)):
-            if LIBRARIES[i] in listd:
-                pass
-            else:
-                os.system('python3 -m pip install ' + LIBRARIES[i] +
-                    ' -q --disable-pip-version-check')
 
     def checkFirstInstallationMac(self):
 
@@ -184,24 +159,6 @@ class Ui_MainWindow(object):
             
             if not checkExe:
                 wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
-            
-            for file in files:
-                if file == 'pdfConverter.py':
-                    checkpdfconverter = True
-                if file == 'dataCollect.py':
-                    checkdatacollect = True
-                if file == 'exportData.py':
-                    checkexportdata = True
-
-            if checkpdfconverter is True and checkdatacollect is True and checkexportdata is True:
-                pass
-            else:
-                if not checkpdfconverter:
-                    wget.download(LINKPDFCONVERTER, PATHMACOS + '/pdfConverter.py')
-                if not checkdatacollect:
-                    wget.download(LINKDATACOLLECT, PATHMACOS + '/dataCollect.py')
-                if not checkexportdata:
-                    wget.download(LINKEXPORTDATA, PATHMACOS + '/exportData.py')
 
         else:
             os.mkdir(PATHMACOS)
