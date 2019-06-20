@@ -45,10 +45,6 @@ Premiamo ok e dirigiti verso la cartella "Documenti/PdfConverter-DataAnalyzer/ou
 
 - 1.0
 	+ Conversione permessa soltanto con le aziende Eni, Esso, Union
-	+ Non è possibile selezionare più file contemporaneamente
-	+ Repaint della finestra non funzionante
-	+ Bottoni nella barra superiore dello schermo non funzionanti
-	+ Gestione degli errori non corretta in tutto il programma
 	+ L'app è sviluppata soltanto per macOS
 
 - 1.0.1
