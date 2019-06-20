@@ -53,4 +53,4 @@ Premiamo ok e dirigiti verso la cartella "Documenti/PdfConverter-DataAnalyzer/ou
 
 - 1.0.2
 	- Sistemato il repaint dell'applicazione, adesso tutti i bottoni si aggiornano correttamente
-	- Risolto: Quando si faceva una seconda conversione, il file precedente compariva nuovamente nella lista, dando errore nella conversione e il conseguente crash dell'applicazione
+	- Risolto: Quando si faceva una seconda conversione, il nome del file convertito precedentemente compariva nuovamente nella lista, dando errore nella conversione e il conseguente crash dell'applicazione
