@@ -139,8 +139,6 @@ class Ui_MainWindow(object):
             self.filesName.append(self.file)
             self.pushButton.setEnabled(False)
             self.pushButton_2.setEnabled(True)
-            self.pushButton_2.update()
-            self.pushButton.update()
         else:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -148,6 +146,7 @@ class Ui_MainWindow(object):
             msg.setInformativeText("Non hai selezionato alcun file!")
             msg.setWindowTitle("Errore")
             msg.exec_()
+
 
     def save(self):
         self.azienda = self.comboBox.currentText()
@@ -160,15 +159,16 @@ class Ui_MainWindow(object):
 
         self.listWidget.addItems(self.filesName)
         self.listWidget_2.addItems(self.aziende)
+        self.listWidget.update()
+        self.listWidget_2.update()
+        MainWindow.repaint()
 
         self.pushButton.setEnabled(True)
         self.pushButton_2.setEnabled(False)
         self.pushButton_3.setEnabled(True)
         self.pushButton_4.setEnabled(True)
-        self.pushButton.update()
-        self.pushButton_2.update()
-        self.pushButton_3.update()
-        self.pushButton_4.update()
+        MainWindow.repaint()
+        
 
     def avviaConversione(self):
 
@@ -269,9 +269,15 @@ class Ui_MainWindow(object):
         msg.setText("Conversione completata!")
         msg.setWindowTitle("Fine conversione")
         msg.exec_()
-
+        
         self.listWidget.clear()
         self.listWidget_2.clear()
+        self.files = []
+        self.filesName = []
+        self.aziende = []
+        self.pushButton_4.setEnabled(False)
+        self.pushButton_3.setEnabled(False)
+        MainWindow.repaint()
 
 
 if __name__ == "__main__":

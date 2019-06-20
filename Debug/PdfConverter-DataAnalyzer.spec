@@ -26,7 +26,7 @@ exe = EXE(pyz,
           bootloader_ignore_signals=False,
           strip=False,
           upx=True,
-          console=False , icon='app.icns')
+          console=False , icon='app.ico')
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
@@ -36,5 +36,5 @@ coll = COLLECT(exe,
                name='PdfConverter-DataAnalyzer')
 app = BUNDLE(coll,
              name='PdfConverter-DataAnalyzer.app',
-             icon='app.icns',
+             icon='app.ico',
              bundle_identifier=None)

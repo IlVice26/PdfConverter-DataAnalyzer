@@ -2,7 +2,7 @@
  False,
  False,
  True,
- 'app.icns',
+ 'app.ico',
  None,
  False,
  False,
@@ -42,7 +42,7 @@
  [],
  False,
  False,
- 1561023337,
+ 1561026367,
  [('runw',
    '/usr/local/lib/python3.7/site-packages/PyInstaller/bootloader/Darwin-64bit/runw',
    'EXECUTABLE')])
