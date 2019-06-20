@@ -3,7 +3,7 @@
 Progetto creato interamente da **Vicentini Elia**, Studente presso ITIS G.Marconi di Verona, Italia
 
  ## Che cos'è "PdfConverter & DataAnalyzer" ?
- **"PdfConverter & DataAnalyzer"** è un programma che ti permette di visualizzare i dati più importanti di aziende come Eni, Esso e Union in una semplice tabella Excel!
+ **"PdfConverter & DataAnalyzer"** è un programma scritto interamente in Python3 che ti permette di visualizzare i dati più importanti di aziende come Eni, Esso e Union in una semplice tabella Excel!
 
 
 ## Come funziona?
