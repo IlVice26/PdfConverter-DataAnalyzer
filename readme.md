@@ -50,3 +50,7 @@ Premiamo ok e dirigiti verso la cartella "Documenti/PdfConverter-DataAnalyzer/ou
 	+ Bottoni nella barra superiore dello schermo non funzionanti
 	+ Gestione degli errori non corretta in tutto il programma
 	+ L'app è sviluppata soltanto per macOS
+
+- 1.0.1
+	+ Sistemato il menuBar, ora c'è solo un bottone chiamato "Info"
+	+ I bottoni del menuBar adesso si collegano alle pagine correttamente 
