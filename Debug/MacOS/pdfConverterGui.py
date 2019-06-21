@@ -12,10 +12,10 @@ import webbrowser
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog
 
-from util import setupGui
-from util import pdfConverter
-from util import dataCollect
-from util import exportData
+import util.setupGui as setupGui
+import util.dataCollect as dataCollect
+import util.exportData as exportData
+import util.pdfConverter as pdfConverter
 
 
 class Ui_MainWindow(object):
@@ -128,6 +128,7 @@ class Ui_MainWindow(object):
         self.actionGit.setText(_translate("MainWindow", "Git"))
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
         self.actionAutore_progetto.setText(_translate("MainWindow", "Autore progetto"))
+        MainWindow.setFixedSize(MainWindow.size())
 
     def get_file(self):
         name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf')
