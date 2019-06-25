@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 """
     Gui per pdfConverter.py
-
     Lavoro svolto da Vicentini Elia
 """
 
@@ -9,8 +8,10 @@ import os
 import sys
 import webbrowser
 
-from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QCheckBox, QLineEdit
+from PyQt5 import QtCore, QtWidgets, QtGui
+from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QCheckBox, QLineEdit, QLabel
+from PyQt5.QtGui import QPainter, QPen, QBrush, QPixmap, QColor
+from PyQt5.QtCore import Qt
 
 import util.setupGui as setupGui
 import util.dataCollect as dataCollect
@@ -30,66 +31,94 @@ class Ui_MainWindow(object):
     isEncrypted = False
 
     def setupUi(self, MainWindow):
+        
+        self.color = QColor(56, 56, 56)
+        
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(740, 390)
+        MainWindow.resize(740, 430)
         MainWindow.setWindowOpacity(1.0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        
-        # Titolo
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(20, 20, 471, 31))
-        self.label.setObjectName("label")
-        
+
+        # Sfondo programma
+        self.titoloImage = QLabel(self.centralwidget)
+        self.titoloImage.setPixmap(QPixmap("testTitoloprogramma.png"))
+        self.titoloImage.setGeometry(0, 0, 740, 85)
+
+        self.sfondoImmagine = QLabel(self.centralwidget)
+        self.sfondoImmagine.setPixmap(QPixmap('sfondoBianco1.png'))
+        self.sfondoImmagine.setGeometry(0, 85, 740, 340)
+
+        # Titolo programma
+        self.titolo = QLabel(self.centralwidget)
+        self.titolo.setGeometry(QtCore.QRect(25, 90, 1000, 50))
+        self.titolo.setObjectName('titolo')
+        self.titolo.setStyleSheet('color: rgb(56, 56, 56)')
+        self.titolo.setFont(QtGui.QFont('Raleway', 30))
+
         # Prima lista
         self.listWidget = QtWidgets.QListWidget(self.centralwidget)
-        self.listWidget.setGeometry(QtCore.QRect(280, 110, 221, 201))
+        self.listWidget.setGeometry(QtCore.QRect(280, 165, 221, 201))
         self.listWidget.setObjectName("listWidget")
-        
+        self.listWidget.setStyleSheet('background-color:white')
+        self.listWidget.setFont(QtGui.QFont('Roboto'))
+
         # Titolo prima lista
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(280, 90, 221, 16))
+        self.label_2.setGeometry(QtCore.QRect(280, 145, 221, 16))
         self.label_2.setObjectName("label_2")
+        self.label_2.setStyleSheet('color: rgb(56, 56, 56)')
+        self.label_2.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Scegli File
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(20, 110, 121, 32))
+        self.pushButton.setGeometry(QtCore.QRect(20, 161, 121, 32))
         self.pushButton.setObjectName("pushButton")
+        self.pushButton.setStyleSheet('color: rgb(56, 56, 56)')
+        self.pushButton.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Salva File
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(20, 200, 241, 32))
+        self.pushButton_2.setGeometry(QtCore.QRect(20, 253, 241, 32))
         self.pushButton_2.setObjectName("pushButton_2")
-        
+        self.pushButton_2.setFont(QtGui.QFont('Roboto'))
+
         # Seconda lista 
         self.listWidget_2 = QtWidgets.QListWidget(self.centralwidget)
-        self.listWidget_2.setGeometry(QtCore.QRect(510, 110, 221, 201))
+        self.listWidget_2.setGeometry(QtCore.QRect(510, 165, 221, 201))
         self.listWidget_2.setObjectName("listWidget_2")
+        self.listWidget_2.setStyleSheet('background-color: white')
+        self.listWidget_2.setFont(QtGui.QFont('Roboto'))
         
         # Titolo seconda lista
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(510, 90, 59, 16))
+        self.label_3.setGeometry(QtCore.QRect(510, 145, 59, 16))
         self.label_3.setObjectName("label_3")
+        self.label_3.setStyleSheet('color: rgb(56, 56, 56)')
+        self.label_3.setFont(QtGui.QFont('Roboto'))
         
         # Combobox (Eni, Esso, Union)
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox.setGeometry(QtCore.QRect(140, 109, 121, 32))
+        self.comboBox.setGeometry(QtCore.QRect(140, 160, 121, 32))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.comboBox.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Avvia Conversione
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(20, 280, 241, 32))
+        self.pushButton_3.setGeometry(QtCore.QRect(20, 341, 241, 32))
         self.pushButton_3.setObjectName("pushButton_3")
+        self.pushButton_3.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Elimina oggetti
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(340, 310, 101, 31))
+        self.pushButton_4.setGeometry(QtCore.QRect(340, 370, 101, 31))
         self.pushButton_4.setObjectName("pushButton_4")
-        
+        self.pushButton_3.setFont(QtGui.QFont('Roboto'))
+
         # Menu bar
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -115,23 +144,26 @@ class Ui_MainWindow(object):
 
         # Titolo checkBox7 
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(28, 145, 221, 16))
+        self.label_4.setGeometry(QtCore.QRect(28, 196, 221, 16))
         self.label_4.setObjectName("label_4")
+        self.label_4.setFont(QtGui.QFont('Roboto'))
 
         # CheckBox
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox.setGeometry(QtCore.QRect(132, 143, 20, 20))
+        self.checkBox.setGeometry(QtCore.QRect(132, 194, 20, 20))
         self.checkBox.setObjectName("checkBox")
         
         # Titolo dialogText
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(28, 173, 221, 16))
+        self.label_5.setGeometry(QtCore.QRect(28, 225, 221, 16))
         self.label_5.setObjectName("label_5")
+        self.label_5.setFont(QtGui.QFont('Roboto'))
 
         # DialogTextChiave
         self.dialogText = QtWidgets.QLineEdit(self.centralwidget)
-        self.dialogText.setGeometry(QtCore.QRect(78, 171, 175, 20))
+        self.dialogText.setGeometry(QtCore.QRect(78, 223, 175, 20))
         self.dialogText.setObjectName("dialogText")
+        self.dialogText.setFont(QtGui.QFont('Roboto'))
 
         # Setup iniziale dei bottoni
         self.pushButton_2.setEnabled(False)
@@ -158,7 +190,6 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Pdf Converter & Data Analyzer"))
-        self.label.setText(_translate("MainWindow", "<html><head/><body><p><span style=\" font-size:24pt; font-weight:600; font-style:italic;\">Pdf Converter &amp; Data Analyzer </span><span style=\" font-size:24pt; font-weight:600; font-style:italic; vertical-align:sub;\">by Vicentini Elia</span></p></body></html>"))
         self.label_2.setText(_translate("MainWindow", "File pronti per la conversione"))
         self.pushButton.setText(_translate("MainWindow", "Seleziona file"))
         self.pushButton_2.setText(_translate("MainWindow", "Salva scelta"))
@@ -175,7 +206,9 @@ class Ui_MainWindow(object):
         self.actionAutore_progetto.setText(_translate("MainWindow", "Autore progetto"))
         self.label_4.setText(_translate("Mainwindow", "Il file è criptato?"))
         self.label_5.setText(_translate("Mainwindow", "Chiave"))
+        self.titolo.setText(_translate("Mainwindow", "Pdf Converter & Data Analyzer"))
         MainWindow.setFixedSize(MainWindow.size())
+
 
     def openAutoreProgetto(self):
         """
