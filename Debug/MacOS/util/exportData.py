@@ -19,7 +19,7 @@ import util.setupGui as setupGui
 targhe1 = dataCollect.targheEni
 targhe2 = dataCollect.targheUnion
 targhe3 = dataCollect.targheEsso
-
+tessere = dataCollect.elemautostrade
 
 def exporttofile():
     

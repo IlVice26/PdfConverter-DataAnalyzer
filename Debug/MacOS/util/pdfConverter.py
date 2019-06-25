@@ -10,6 +10,7 @@ import os
 import subprocess
 import time
 import util.setupGui as setupGui
+import pdfConverterGui
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileDialog, QMessageBox
@@ -17,6 +18,8 @@ from PyQt5.QtWidgets import QFileDialog, QMessageBox
 pathPdf = setupGui.PATHMACOS
 pathExe = setupGui.PATHMACOS + '/lib/pdftotxt'
 filesToConvert = []
+
+
 
 
 def converttotxt():
@@ -31,7 +34,6 @@ def converttotxt():
     # Controllo numero file
     if len(files) is 0:
         print("[-] Nessun file trovato nella cartella pdf")
-        exit(1)
     
     # Controllo estensioni
     for i in range(len(files)):
@@ -40,13 +42,15 @@ def converttotxt():
             filesToConvert.append(files[i])
 
     for i in range(len(filesToConvert)):
-        try:
-            temp = filesToConvert[i].split('.')
+        temp = filesToConvert[i].split('.')
+        if not temp[0].__contains__('-'):  
             name = temp[0] + ".txt"
             os.system(pathExe + " -table " + pathPdf +  "/pdf/" + filesToConvert[i] + " " + pathPdf +"/txt/" + name)
             time.sleep(1)
-        except PermissionError:
-            pass
+        else:
+            passwd = temp[0].split('-')
+            name = temp[0] + ".txt"
+            os.system(pathExe + " -table -opw " + passwd[-1] + " " + pathPdf +  "/pdf/" + filesToConvert[i] + " " + pathPdf +"/txt/" + name)
 
 
 def tostring(list):
@@ -191,6 +195,39 @@ def delrowsesso():
     else:
         pass
 
+def delrowsautostrade():
+    canDelRows = False
+    filesToTrasform = []
+
+    files = os.listdir(setupGui.PATHMACOS + '/txt')
+
+    for file in files:
+        if file.__contains__('autostrade'):
+            filesToTrasform.append(file)
+            canDelRows = True
+
+    if canDelRows:
+        for filet in filesToTrasform:
+            temp6 = filet.split('.')
+            nameTransformed = temp6[0]
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
+            file_out = open(setupGui.PATHMACOS + '/txt/' + nameTransformed + '_out.txt', 'w')
+
+            rows = []
+            lines = file.readlines()
+
+            for line in lines:
+                if line.__contains__('TESSERA VIACARD') or line.__contains__('Totale numero movimenti') or line.__contains__('TELEPASS'):
+                    rows.append(line)
+
+            file_out.writelines(rows)
+            file_out.close()
+            file.close()
+            os.system('rm ' + setupGui.PATHMACOS + '/txt/' + nameTransformed + '.txt')
+    else:
+        pass    
+
+
 def checkfileclosed(file):
     """
         Controlla se il file è chiuso correttamente
@@ -203,12 +240,15 @@ def start():
     """
         Avvio del servizio tramite exportData.py
     """
+    # Conversione dei file pdf in txt
     converttotxt()
-
+    
+    # Eliminazione delle righe non necessarie
     delrowseni()
     delrowsunion()
     delrowsesso()
-
+    delrowsautostrade()
+    
 
 if __name__ == "__main__":    
     start()

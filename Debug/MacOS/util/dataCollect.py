@@ -4,7 +4,9 @@
 """
 
 import os
+import openpyxl
 import util.setupGui as setupGui
+from PyQt5.QtWidgets import QMessageBox
 
 __version__ = '0.0.1'
 __author__ = 'Vicentini Elia'
@@ -12,6 +14,7 @@ __author__ = 'Vicentini Elia'
 targheEni = {}
 targheUnion = {}
 targheEsso = {}
+elemautostrade = {}
 
 boold = False
 
@@ -240,6 +243,41 @@ def datacollecteni():
         pass
        
 
+def datacollectautostrade():
+    
+    global elemautostrade
+
+    filesToCollect = []
+
+    canCollect = False
+    
+    files = os.listdir(setupGui.PATHMACOS + '/txt/')
+
+    for file in files:
+        if file.__contains__('autostrade'):
+            filesToCollect.append(file)
+            canCollect = True
+
+    if canCollect:
+        for filet in filesToCollect:
+            file = open(setupGui.PATHMACOS + '/txt/' + filet, 'r', errors = 'ignore')
+
+            lines = file.readlines()
+
+            for line in lines:
+                if line.__contains__('TESSERA VIACARD') or line.__contains__('APPARATO TELEPASS'):
+                    temp2 = line.split('    ')
+                    tessera = temp2[-1].replace('\n', '')
+                    
+                    temp3 = lines[lines.index(line) + 1].split('    ')
+                    totaleCosto = temp3[-1].replace('\n', '')
+
+                    elemautostrade[tessera] = totaleCosto
+            file.close()
+    else:
+        pass
+
+
 def viewDict(targhe):
     """
         Visualizza tutto il dizionario contenente le targhe
@@ -257,7 +295,7 @@ def start():
     datacollecteni()
     datacollectunion()
     datacollectesso()
-    
+    datacollectautostrade()
     if boold:    
         print('\n -- Targhe ENI --  \n')
         viewDict(targheEni)
@@ -265,6 +303,7 @@ def start():
         viewDict(targheUnion)
         print('\n -- Targhe ESSO --  \n')
         viewDict(targheEsso)
+        
 
 
 if __name__ == "__main__":
