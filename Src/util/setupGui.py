@@ -8,6 +8,8 @@ import sys
 import os
 import ssl
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtWidgets import QMessageBox, QFileDialog
+from PyQt5.QtGui import QIcon
 from lib.Wget import wget
 ssl._create_default_https_context = ssl._create_unverified_context
 
@@ -25,7 +27,7 @@ PATHDOCUMENTSMAC = '/Users/' + USERNAME + '/Documents'
 PATHWIN32 = PATHDOCUMENTSWIN32 + '\\PdfConverter-DataAnalyzer'
 PATHMACOS = PATHDOCUMENTSMAC + '/PdfConverter-DataAnalyzer'
 
-PATHSWIN = ['\\lib', '\\pdf','\\txt', '\\output']
+PATHSWIN = ['\\lib', '\\pdf','\\txt', '\\output', '\\database']
 PATHSMACOS = ['/lib', '/pdf','/txt', '/output']
 
 class Ui_MainWindow(object):
@@ -90,7 +92,7 @@ class Ui_MainWindow(object):
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
 
     def main(self):
-        self.checkFirstInstallationMac()
+        self.checkFirstInstallation()
         self.progressBar.setValue(100)
     
 
@@ -105,18 +107,16 @@ class Ui_MainWindow(object):
             wget.download(LINKPDFTOTEXTMACOS, PATHWIN32 + '\\lib\\pdftotxt')
 
 
-    def checkFirstInstallationMac(self):
+    def checkFirstInstallation(self):
 
         dirPCDA = False
         dirLib = False 
         dirOut = False
         dirPdf = False
         dirTxt = False
+        dirDb = False
         checkDir = False
         checkExe = False
-        checkpdfconverter = False
-        checkdatacollect = False
-        checkexportdata = False
 
         files = os.listdir(PATHDOCUMENTSMAC)
 
@@ -137,8 +137,10 @@ class Ui_MainWindow(object):
                     dirTxt = True
                 if file == 'output':
                     dirOut = True
+                if file == 'database':
+                    dirDb = True
             
-            if dirLib is True and dirPdf is True and dirTxt is True and dirOut is True:
+            if dirLib is True and dirPdf is True and dirTxt is True and dirOut is True and dirDb is True:
                 checkDir = True
             else:
                 if not dirLib:
@@ -149,6 +151,8 @@ class Ui_MainWindow(object):
                     os.mkdir(PATHWIN32 + '\\txt')
                 if not dirOut:
                     os.mkdir(PATHWIN32 + '\\output')
+                if not dirDb:
+                    os.mkdir(PATHWIN32 + '\\database')
 
             if checkDir:
                 fileExe = os.listdir(PATHWIN32 + '\\lib')
@@ -162,9 +166,37 @@ class Ui_MainWindow(object):
 
         else:
             os.mkdir(PATHWIN32)
-            for p in PATHSMACOS:
+            for p in PATHSWIN:
                 os.mkdir(PATHWIN32 + p)
             self.downloadUtilities()
+            self.selectDatabase()
+
+    def selectDatabase(self):
+        
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText('Inserisci il database a cui fare riferimento')
+        msg.setWindowTitle("Nuova installazione")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        val = msg.exec_()
+        if val == 1024:
+            name = QFileDialog.getOpenFileName(None, 'Seleziona Database', '', '*.xlsx')
+            path = name[0]
+            if not path == '':
+                os.rename(path, 'database.xlsx')
+                temp = path.split('\\')
+                cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'database.xlsx' + ' ' + PATHWIN32 + '\\database\\database.xlsx'
+                os.system(cmdFinal)
+            else:
+                alert = QMessageBox()
+                alert.setIcon(QMessageBox.Critical)
+                alert.setText('Nessun database selezionato!')
+                alert.setWindowIcon(QIcon('img\\icon.png'))
+                alert.setWindowTitle('Attenzione!')
+                alert.exec_()
+                self.selectDatabase
+
+            
 
 
 app = QtWidgets.QApplication(sys.argv)
@@ -172,5 +204,4 @@ MainWindow = QtWidgets.QMainWindow()
 ui = Ui_MainWindow()
 ui.setupUi(MainWindow)
 ui.main()
-
 

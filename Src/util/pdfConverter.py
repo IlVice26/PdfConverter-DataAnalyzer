@@ -31,10 +31,6 @@ def converttotxt():
     time.sleep(2)
     files = os.listdir(pathPdf + '\\pdf')
 
-    # Controllo numero file
-    if len(files) is 0:
-        print("[-] Nessun file trovato nella cartella pdf")
-    
     # Controllo estensioni
     for i in range(len(files)):
         temp = files[i].split('.')

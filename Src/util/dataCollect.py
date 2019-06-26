@@ -7,6 +7,8 @@ import os
 import openpyxl
 import util.setupGui as setupGui
 from PyQt5.QtWidgets import QMessageBox
+import xml.etree.ElementTree as ET
+
 
 __version__ = '0.0.1'
 __author__ = 'Vicentini Elia'
@@ -15,6 +17,8 @@ targheEni = {}
 targheUnion = {}
 targheEsso = {}
 elemautostrade = {}
+targheVWL = {}
+targheARVAL = {}
 
 boold = False
 
@@ -277,6 +281,70 @@ def datacollectautostrade():
     else:
         pass
 
+def parseVWL():
+    """
+    Esegue il parse su tutti i file xml che sono inseriti all'interno
+    della directory
+    """
+    global targheVWL
+
+    filesToCollect = []
+
+    canCollect = False
+    
+    files = os.listdir(setupGui.PATHWIN32 + '\\txt\\')
+
+    for file in files:
+        if file.__contains__('vwl') and file.__contains__('.xml'):
+            filesToCollect.append(file)
+            canCollect = True
+
+    if canCollect:
+        for filet in filesToCollect:    
+            tree = ET.parse(setupGui.PATHWIN32 + '\\txt\\' + filet)
+            root = tree.getroot()
+
+            for i in range(0, len(root[1][1]) - 1, 2):   
+                targa = root[1][1][i][8][1].text
+                tot1 = float(root[1][1][i][6].text)
+                tot2 = float(root[1][1][i+1][6].text)
+                targheVWL[targa] = tot1 + tot2
+    else:
+        pass
+
+
+
+def parseARVAL():
+    """
+    Esegue il parse su tutti i file xml che sono inseriti all'interno
+    della directory
+    """
+    global targheARVAL
+
+    filesToCollect = []
+
+    canCollect = False
+    
+    files = os.listdir(setupGui.PATHWIN32 + '\\txt\\')
+
+    for file in files:
+        if file.__contains__('arval') and file.__contains__('.xml'):
+            filesToCollect.append(file)
+            canCollect = True
+
+    if canCollect:
+        for filet in filesToCollect:    
+            tree = ET.parse(setupGui.PATHWIN32 + '\\txt\\' + filet)
+            root = tree.getroot()
+
+            for i in range(0, len(root[1][1]) - 1, 2):   
+                targa = root[1][1][i][8][1].text
+                tot1 = float(root[1][1][i][5].text)
+                tot2 = float(root[1][1][i+1][5].text)
+                targheARVAL[targa] = tot1 + tot2
+    else:
+        pass     
+
 
 def viewDict(targhe):
     """
@@ -291,19 +359,47 @@ def viewDict(targhe):
         print(targhe[keys[i]])
 
 
+def exportRows():
+    file = open('rawFile.txt', 'w')
+    file.write('-- Targhe Eni --\n')
+    keys = list(targheEni.keys())
+    for i in range(len(targheEni)):
+        file.write(keys[i])
+        file.write(str(targheEni[keys[i]]))
+    file.write('-- Targhe Esso --\n')
+    keys = list(targheEsso.keys())
+    for i in range(len(targheEsso)):
+        file.write(keys[i])
+        file.write(str(targheEsso[keys[i]]))
+    file.write('-- Targhe Union --\n')
+    keys = list(targheUnion.keys())
+    for i in range(len(targheUnion)):
+        file.write(keys[i])
+        file.write(str(targheUnion[keys[i]]))
+    file.write('-- Tessere Autostrade --\n')
+    keys = list(elemautostrade.keys())
+    for i in range(len(elemautostrade)):
+        file.write(keys[i])
+        file.write(str(elemautostrade[keys[i]]))
+    file.write('-- Targhe VWL --\n')
+    keys = list(targheVWL.keys())
+    for i in range(len(targheVWL)):
+        file.write(keys[i])
+        file.write(str(targheVWL[keys[i]]))
+    file.write('-- Targhe Arval --\n')
+    keys = list(targheARVAL.keys())
+    for i in range(len(targheARVAL)):
+        file.write(keys[i])
+        file.write(str(targheARVAL[keys[i]]))
+    file.close()
+
 def start():
     datacollecteni()
     datacollectunion()
     datacollectesso()
     datacollectautostrade()
-    if boold:    
-        print('\n -- Targhe ENI --  \n')
-        viewDict(targheEni)
-        print('\n -- Targhe UNION --  \n')
-        viewDict(targheUnion)
-        print('\n -- Targhe ESSO --  \n')
-        viewDict(targheEsso)
-        
+    parseVWL()
+    parseARVAL()
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@
 import os
 import sys
 import webbrowser
+import time
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QCheckBox, QLineEdit, QLabel
@@ -32,10 +33,8 @@ class Ui_MainWindow(object):
 
     def setupUi(self, MainWindow):
         
-        self.color = QColor(56, 56, 56)
-        
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(740, 430)
+        MainWindow.resize(740, 440)
         MainWindow.setWindowOpacity(1.0)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
@@ -51,71 +50,74 @@ class Ui_MainWindow(object):
 
         # Titolo programma
         self.titolo = QLabel(self.centralwidget)
-        self.titolo.setGeometry(QtCore.QRect(25, 90, 1000, 50))
+        self.titolo.setGeometry(QtCore.QRect(18, 90, 1000, 50))
         self.titolo.setObjectName('titolo')
         self.titolo.setStyleSheet('color: rgb(56, 56, 56)')
         self.titolo.setFont(QtGui.QFont('Raleway', 30))
 
         # Prima lista
         self.listWidget = QtWidgets.QListWidget(self.centralwidget)
-        self.listWidget.setGeometry(QtCore.QRect(280, 165, 221, 201))
+        self.listWidget.setGeometry(QtCore.QRect(270, 165, 221, 201))
         self.listWidget.setObjectName("listWidget")
         self.listWidget.setStyleSheet('background-color:white')
         self.listWidget.setFont(QtGui.QFont('Roboto'))
 
         # Titolo prima lista
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(280, 145, 221, 16))
+        self.label_2.setGeometry(QtCore.QRect(270, 145, 221, 16))
         self.label_2.setObjectName("label_2")
         self.label_2.setStyleSheet('color: rgb(56, 56, 56)')
         self.label_2.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Scegli File
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setGeometry(QtCore.QRect(20, 161, 121, 32))
+        self.pushButton.setGeometry(QtCore.QRect(20, 164, 119, 20))
         self.pushButton.setObjectName("pushButton")
         self.pushButton.setStyleSheet('color: rgb(56, 56, 56)')
         self.pushButton.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Salva File
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setGeometry(QtCore.QRect(20, 253, 241, 32))
+        self.pushButton_2.setGeometry(QtCore.QRect(20, 243, 241, 20))
         self.pushButton_2.setObjectName("pushButton_2")
         self.pushButton_2.setFont(QtGui.QFont('Roboto'))
 
         # Seconda lista 
         self.listWidget_2 = QtWidgets.QListWidget(self.centralwidget)
-        self.listWidget_2.setGeometry(QtCore.QRect(510, 165, 221, 201))
+        self.listWidget_2.setGeometry(QtCore.QRect(500, 165, 221, 201))
         self.listWidget_2.setObjectName("listWidget_2")
         self.listWidget_2.setStyleSheet('background-color: white')
         self.listWidget_2.setFont(QtGui.QFont('Roboto'))
         
         # Titolo seconda lista
         self.label_3 = QtWidgets.QLabel(self.centralwidget)
-        self.label_3.setGeometry(QtCore.QRect(510, 145, 59, 16))
+        self.label_3.setGeometry(QtCore.QRect(500, 145, 59, 16))
         self.label_3.setObjectName("label_3")
         self.label_3.setStyleSheet('color: rgb(56, 56, 56)')
         self.label_3.setFont(QtGui.QFont('Roboto'))
         
         # Combobox (Eni, Esso, Union)
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox.setGeometry(QtCore.QRect(140, 160, 121, 32))
+        self.comboBox.setGeometry(QtCore.QRect(141, 165, 119, 18))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
+        self.comboBox.addItem("")
+        self.comboBox.addItem("")
         self.comboBox.setFont(QtGui.QFont('Roboto'))
+        self.comboBox.setStyleSheet('color: rgb(56, 56, 56)')
         
         # Bottone Avvia Conversione
         self.pushButton_3 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_3.setGeometry(QtCore.QRect(20, 341, 241, 32))
+        self.pushButton_3.setGeometry(QtCore.QRect(20, 347, 241, 20))
         self.pushButton_3.setObjectName("pushButton_3")
         self.pushButton_3.setFont(QtGui.QFont('Roboto'))
         
         # Bottone Elimina oggetti
         self.pushButton_4 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_4.setGeometry(QtCore.QRect(340, 370, 101, 31))
+        self.pushButton_4.setGeometry(QtCore.QRect(332, 372, 101, 20))
         self.pushButton_4.setObjectName("pushButton_4")
         self.pushButton_3.setFont(QtGui.QFont('Roboto'))
 
@@ -129,6 +131,7 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
+        self.statusbar.setStyleSheet('color: rgb(56, 56, 56)')
         MainWindow.setStatusBar(self.statusbar)
         self.actionEsci = QtWidgets.QAction(MainWindow)
         self.actionEsci.setObjectName("actionEsci")
@@ -141,24 +144,24 @@ class Ui_MainWindow(object):
 
         # Titolo checkBox7 
         self.label_4 = QtWidgets.QLabel(self.centralwidget)
-        self.label_4.setGeometry(QtCore.QRect(28, 196, 221, 16))
+        self.label_4.setGeometry(QtCore.QRect(21, 190, 221, 16))
         self.label_4.setObjectName("label_4")
         self.label_4.setFont(QtGui.QFont('Roboto'))
 
         # CheckBox
         self.checkBox = QtWidgets.QCheckBox(self.centralwidget)
-        self.checkBox.setGeometry(QtCore.QRect(132, 194, 20, 20))
+        self.checkBox.setGeometry(QtCore.QRect(107, 188, 20, 20))
         self.checkBox.setObjectName("checkBox")
         
         # Titolo dialogText
         self.label_5 = QtWidgets.QLabel(self.centralwidget)
-        self.label_5.setGeometry(QtCore.QRect(28, 225, 221, 16))
+        self.label_5.setGeometry(QtCore.QRect(21, 215, 221, 16))
         self.label_5.setObjectName("label_5")
         self.label_5.setFont(QtGui.QFont('Roboto'))
 
         # DialogTextChiave
         self.dialogText = QtWidgets.QLineEdit(self.centralwidget)
-        self.dialogText.setGeometry(QtCore.QRect(78, 223, 175, 20))
+        self.dialogText.setGeometry(QtCore.QRect(60, 215, 200, 16))
         self.dialogText.setObjectName("dialogText")
         self.dialogText.setFont(QtGui.QFont('Roboto'))
 
@@ -182,6 +185,9 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.statusbar.showMessage('Pronto')
+
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -194,6 +200,8 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(1, _translate("MainWindow", "Esso"))
         self.comboBox.setItemText(2, _translate("MainWindow", "Union"))
         self.comboBox.setItemText(3, _translate("MainWindow", "Autostrade"))
+        self.comboBox.setItemText(4, _translate("MainWindow", "VWL"))
+        self.comboBox.setItemText(5, _translate("MainWindow", "Arval"))
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
         self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
         self.menuFile.setTitle(_translate("MainWindow", "Opzioni"))
@@ -203,9 +211,31 @@ class Ui_MainWindow(object):
         self.label_5.setText(_translate("Mainwindow", "Chiave"))
         self.titolo.setText(_translate("Mainwindow", "Pdf Converter & Data Analyzer"))
         MainWindow.setFixedSize(MainWindow.size())
+        MainWindow.setWindowIcon(QtGui.QIcon('img\\icon.png'))
 
     def changeDatabase(self):
-        pass
+        db = QFileDialog.getOpenFileName(None, 'Seleziona il database', '', '*.xlsx')
+        path = db[0]
+        if path == '':
+            alert = QMessageBox()
+            alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))
+            alert.setText('Attenzione')
+            alert.setInformativeText('Nessun database selezionato!')
+            alert.setIcon(QMessageBox.Critical)
+            alert.setWindowTitle('Attenzione')
+            alert.exec_()
+        else:
+            os.rename(path, 'database.xlsx')
+            temp = path.split('\\')
+            cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'database.xlsx' + ' ' + setupGui.PATHWIN32 + '\\database\\database.xlsx'
+            os.system(cmdFinal)
+            alert = QMessageBox()
+            alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))
+            alert.setText('Informazione')
+            alert.setInformativeText('Database salvato correttamente!')
+            alert.setIcon(QMessageBox.Information)
+            alert.setWindowTitle('Informazione')
+            alert.exec_()
 
     def closeWindow(self):
         """
@@ -228,7 +258,7 @@ class Ui_MainWindow(object):
 
 
     def get_file(self):
-        name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf')
+        name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf, *.xml')
         tempN = name[0]
 
         # Controllo se il file è stato selezionato
@@ -247,6 +277,7 @@ class Ui_MainWindow(object):
             self.pushButton_2.setEnabled(True)
             self.label_4.setEnabled(True)
             self.checkBox.setEnabled(True)
+            self.statusbar.showMessage("Seleziona l'azienda e salva la scelta")
             MainWindow.repaint()
         else:
 
@@ -294,16 +325,25 @@ class Ui_MainWindow(object):
         self.label_5.setEnabled(False)
         self.dialogText.setEnabled(False)
         self.dialogText.setText('')
+        self.statusbar.showMessage('Salvato')
         MainWindow.repaint()
+        time.sleep(2)
+        self.statusbar.showMessage('Avvia la conversione o seleziona un nuovo file')
         
 
     def avviaConversione(self):
-
+        """
+        Preparazione del programma alla conversione e raccolta
+        del dati dai file .pdf e .xml
+        """
+    
         DizAziende = {}
         DizAziende['Eni'] = []
         DizAziende['Esso'] = []
         DizAziende['Union'] = []
         DizAziende['Autostrade'] = []
+        DizAziende['VWL'] = []
+        DizAziende['Arval'] = []
 
         # Conto le aziende
         for i in range(len(self.aziende)):
@@ -315,17 +355,41 @@ class Ui_MainWindow(object):
                 DizAziende['Union'].append(i)
             if self.aziende[i] == 'Autostrade':
                 DizAziende['Autostrade'].append(i)
+            if self.aziende[i] == "VWL":
+                DizAziende['VWL'].append(i)
+            if self.aziende[i] == 'Arval':
+                DizAziende['Arval'].append(i)
 
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Warning)
-        msg.setText('Sei sicuro di convertire questi file?')
-        msg.setWindowTitle("Attenzione!")
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        val = msg.exec_()
-        if val == 1024:
-            self.convertFiles(DizAziende)
+        # Controllo della presenza del database
+        canProceed = False
+        files = os.listdir(setupGui.PATHWIN32 + '\\database\\')
+        for file in files:
+            if file.__contains__('database.xlsx'):
+                canProceed = True
+
+        if canProceed:
+            # Conferma della conversione
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText('Sei sicuro di convertire questi file?')
+            msg.setWindowTitle("Attenzione!")
+            msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            val = msg.exec_()
+            if val == 1024:
+                self.convertFiles(DizAziende)
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Attenzione")
+            msg.setInformativeText("Nessun database trovato!\nPer inserire un database: Opzioni -> Seleziona Database")
+            msg.setWindowTitle("Attenzione!")
+            msg.exec_()
+
 
     def eliminaDaLista(self):
+        """
+        Elimina dalla lista l'elemento selezionato
+        """
         curItem = self.listWidget.currentRow()
         self.listWidget.takeItem(curItem)
         self.listWidget_2.takeItem(curItem)
@@ -336,11 +400,14 @@ class Ui_MainWindow(object):
 
     def convertFiles(self, DizAziende):
         PDFPATH = setupGui.PATHWIN32 + '\\pdf\\'
-
+        TXTPATH = setupGui.PATHWIN32 + '\\txt\\'    
+        
         lenEni = len(DizAziende['Eni'])
         lenEsso = len(DizAziende['Esso'])
         lenUnion = len(DizAziende['Union'])
         lenAutostrade = len(DizAziende['Autostrade'])
+        lenVWL = len(DizAziende['VWL'])
+        lenArval = len(DizAziende['Arval'])
 
         # Pulizia dei file precedenti
         test = os.listdir(PDFPATH)
@@ -419,6 +486,40 @@ class Ui_MainWindow(object):
                         os.system(cmdFinal)
             else:
                 pass
+
+            if not lenVWL is 0:
+                for i in range(lenVWL):
+                    if self.files[DizAziende['VWL'][i]][1] == False:    
+                        path = self.files[DizAziende['VWL'][i]][0]
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'vwl' + str(i) + '.xml')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'vwl' + str(i) + '.xml' + ' ' + TXTPATH + 'vwl' + str(i) + '.xml'
+                        os.system(cmdFinal)
+                    else:
+                        path = self.files[DizAziende['VWL'][i]][0]
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'vwl' + str(i) + '-' + str(self.files[DizAziende['VWL'][i]][-1]) +'.xml')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'vwl' + str(i) + '-' + str(self.files[DizAziende['VWL'][i]][-1]) + '.xml' + ' ' + TXTPATH + 'vwl' + str(i) + '-' + str(self.files[DizAziende['VWL'][i]][-1]) + '.xml'
+                        os.system(cmdFinal)
+            else:
+                pass
+
+            if not lenArval is 0:
+                for i in range(lenArval):
+                    if self.files[DizAziende['Arval'][i]][1] == False:    
+                        path = self.files[DizAziende['Arval'][i]][0]
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'arval' + str(i) + '.xml')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'arval' + str(i) + '.xml' + ' ' + TXTPATH + 'arval' + str(i) + '.xml'
+                        os.system(cmdFinal)
+                    else:
+                        path = self.files[DizAziende['Arval'][i]][0]
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'arval' + str(i) + '-' + str(self.files[DizAziende['Arval'][i]][-1]) +'.xml')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'arval' + str(i) + '-' + str(self.files[DizAziende['Arval'][i]][-1]) + '.xml' + ' ' + TXTPATH + 'arval' + str(i) + '-' + str(self.files[DizAziende['Arval'][i]][-1]) + '.xml'
+                        os.system(cmdFinal)
+            else:
+                pass
         except Exception:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
@@ -447,6 +548,7 @@ class Ui_MainWindow(object):
         self.aziende = []
         self.pushButton_4.setEnabled(False)
         self.pushButton_3.setEnabled(False)
+        self.statusbar.showMessage('Pronto')
         MainWindow.repaint()
 
 
