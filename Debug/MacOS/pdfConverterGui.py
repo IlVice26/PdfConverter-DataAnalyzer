@@ -42,11 +42,11 @@ class Ui_MainWindow(object):
 
         # Sfondo programma
         self.titoloImage = QLabel(self.centralwidget)
-        self.titoloImage.setPixmap(QPixmap("testTitoloprogramma.png"))
+        self.titoloImage.setPixmap(QPixmap(resource_path("testTitoloprogramma.png")))
         self.titoloImage.setGeometry(0, 0, 740, 85)
 
         self.sfondoImmagine = QLabel(self.centralwidget)
-        self.sfondoImmagine.setPixmap(QPixmap('sfondoBianco1.png'))
+        self.sfondoImmagine.setPixmap(QPixmap(resource_path('sfondoBianco1.png')))
         self.sfondoImmagine.setGeometry(0, 85, 740, 340)
 
         # Titolo programma
@@ -130,14 +130,11 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.actionGit = QtWidgets.QAction(MainWindow)
-        self.actionGit.setObjectName("actionGit")
         self.actionEsci = QtWidgets.QAction(MainWindow)
         self.actionEsci.setObjectName("actionEsci")
-        self.actionAutore_progetto = QtWidgets.QAction(MainWindow)
-        self.actionAutore_progetto.setObjectName("actionAutore_progetto")
-        self.menuFile.addAction(self.actionGit)
-        self.menuFile.addAction(self.actionAutore_progetto)
+        self.actionDatabase = QtWidgets.QAction(MainWindow)
+        self.actionDatabase.setObjectName('actionDatabase')
+        self.menuFile.addAction(self.actionDatabase)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEsci)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -175,8 +172,7 @@ class Ui_MainWindow(object):
         self.dialogText.setEnabled(False)
 
         # Azioni di ogni bottone
-        self.actionAutore_progetto.triggered.connect(self.openAutoreProgetto)
-        self.actionGit.triggered.connect(self.openGitPage)
+        self.actionDatabase.triggered.connect(self.changeDatabase)
         self.actionEsci.triggered.connect(self.closeWindow)
         self.pushButton.clicked.connect(self.get_file)
         self.pushButton_2.clicked.connect(self.save)
@@ -200,27 +196,16 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(3, _translate("MainWindow", "Autostrade"))
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
         self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
-        self.menuFile.setTitle(_translate("MainWindow", "Info"))
-        self.actionGit.setText(_translate("MainWindow", "Git"))
-        self.actionEsci.setText(_translate("MainWindow", "Esci"))
-        self.actionAutore_progetto.setText(_translate("MainWindow", "Autore progetto"))
+        self.menuFile.setTitle(_translate("MainWindow", "Opzioni"))
+        self.actionEsci.setText(_translate("MainWindow", "Seleziona Database"))
+        self.actionDatabase.setText(_translate('MainWindow', 'Esci'))
         self.label_4.setText(_translate("Mainwindow", "Il file è criptato?"))
         self.label_5.setText(_translate("Mainwindow", "Chiave"))
         self.titolo.setText(_translate("Mainwindow", "Pdf Converter & Data Analyzer"))
         MainWindow.setFixedSize(MainWindow.size())
 
-
-    def openAutoreProgetto(self):
-        """
-        Apre la pagina di Instagram dell'autore
-        """
-        webbrowser.open_new_tab('https://www.instagram.com/eliavicentiniii/')
-
-    def openGitPage(self):
-        """
-        Apre la pagina web di GitHub
-        """
-        webbrowser.open_new_tab('https://gitlab.com/furnax/stage/pdfconverter-dataanalyzer')
+    def changeDatabase(self):
+        pass
 
     def closeWindow(self):
         """
@@ -472,6 +457,10 @@ class Ui_MainWindow(object):
         self.pushButton_3.setEnabled(False)
         MainWindow.repaint()
 
+def resource_path(relative_path):
+    if hasattr(sys, '_MEIPASS'):
+        return os.path.join(sys._MEIPASS, relative_path)
+    return os.path.join(os.path.abspath("."), relative_path)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
