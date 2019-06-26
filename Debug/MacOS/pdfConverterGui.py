@@ -42,11 +42,11 @@ class Ui_MainWindow(object):
 
         # Sfondo programma
         self.titoloImage = QLabel(self.centralwidget)
-        self.titoloImage.setPixmap(QPixmap(resource_path("testTitoloprogramma.png")))
+        self.titoloImage.setPixmap(QPixmap("img\\testTitoloprogramma.png"))
         self.titoloImage.setGeometry(0, 0, 740, 85)
 
         self.sfondoImmagine = QLabel(self.centralwidget)
-        self.sfondoImmagine.setPixmap(QPixmap(resource_path('sfondoBianco1.png')))
+        self.sfondoImmagine.setPixmap(QPixmap('img\\sfondoBianco1.png'))
         self.sfondoImmagine.setGeometry(0, 85, 740, 340)
 
         # Titolo programma
@@ -197,8 +197,8 @@ class Ui_MainWindow(object):
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
         self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
         self.menuFile.setTitle(_translate("MainWindow", "Opzioni"))
-        self.actionEsci.setText(_translate("MainWindow", "Seleziona Database"))
-        self.actionDatabase.setText(_translate('MainWindow', 'Esci'))
+        self.actionEsci.setText(_translate("MainWindow", "Esci"))
+        self.actionDatabase.setText(_translate('MainWindow', 'Seleziona Database'))
         self.label_4.setText(_translate("Mainwindow", "Il file è criptato?"))
         self.label_5.setText(_translate("Mainwindow", "Chiave"))
         self.titolo.setText(_translate("Mainwindow", "Pdf Converter & Data Analyzer"))
@@ -238,7 +238,7 @@ class Ui_MainWindow(object):
             self.fileTemp.append(name[0])
             
             # Prendo il nome
-            tempName = str(name[0]).split('/')
+            tempName = str(name[0]).split('\\')
             self.file = tempName[-1]
             self.filesName.append(self.file)
             
@@ -335,7 +335,7 @@ class Ui_MainWindow(object):
 
 
     def convertFiles(self, DizAziende):
-        PDFPATH = setupGui.PATHMACOS + '/pdf/'
+        PDFPATH = setupGui.PATHWIN32 + '\\pdf\\'
 
         lenEni = len(DizAziende['Eni'])
         lenEsso = len(DizAziende['Esso'])
@@ -345,28 +345,26 @@ class Ui_MainWindow(object):
         # Pulizia dei file precedenti
         test = os.listdir(PDFPATH)
         for i in range(len(test)):
-            os.popen('rm ' + PDFPATH + test[i])
+            os.popen('del ' + PDFPATH + test[i])
         
-        test = os.listdir(setupGui.PATHMACOS + '/txt/')
+        test = os.listdir(setupGui.PATHWIN32 + '\\txt\\')
         for file in test:
-            os.popen('rm ' + setupGui.PATHMACOS + '/txt/' + file)
+            os.popen('del ' + setupGui.PATHWIN32 + '\\txt\\' + file)
 
         try:
             if not lenEni is 0:
                 for i in range(lenEni):
                     if self.files[DizAziende['Eni'][i]][1] == False:    
                         path = self.files[DizAziende['Eni'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf' + ' ' + PDFPATH + 'eni' + str(i) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '.pdf' + ' ' + PDFPATH + 'eni' + str(i) + '.pdf'
                         os.system(cmdFinal)
                     else:
                         path = self.files[DizAziende['Eni'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) +'.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) +'.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'eni' + str(i) + '-' + str(self.files[DizAziende['Eni'][i]][-1]) + '.pdf'
                         os.system(cmdFinal)
             else:
                 pass
@@ -375,17 +373,15 @@ class Ui_MainWindow(object):
                 for i in range(lenEsso):
                     if self.files[DizAziende['Esso'][i]][1] == False:    
                         path = self.files[DizAziende['Esso'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf' + ' ' + PDFPATH + 'esso' + str(i) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '.pdf' + ' ' + PDFPATH + 'esso' + str(i) + '.pdf'
                         os.system(cmdFinal)
                     else:
                         path = self.files[DizAziende['Esso'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) +'.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) +'.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'esso' + str(i) + '-' + str(self.files[DizAziende['Esso'][i]][-1]) + '.pdf'
                         os.system(cmdFinal)
             else:
                 pass
@@ -394,17 +390,15 @@ class Ui_MainWindow(object):
                 for i in range(lenUnion):
                     if self.files[DizAziende['Union'][i]][1] == False:    
                         path = self.files[DizAziende['Union'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf' + ' ' + PDFPATH + 'union' + str(i) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '.pdf' + ' ' + PDFPATH + 'union' + str(i) + '.pdf'
                         os.system(cmdFinal)
                     else:
                         path = self.files[DizAziende['Union'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) +'.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) +'.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'union' + str(i) + '-' + str(self.files[DizAziende['Union'][i]][-1]) + '.pdf'
                         os.system(cmdFinal)
             else:
                 pass
@@ -413,17 +407,15 @@ class Ui_MainWindow(object):
                 for i in range(lenAutostrade):
                     if self.files[DizAziende['Autostrade'][i]][1] == False:    
                         path = self.files[DizAziende['Autostrade'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '.pdf' + ' ' + PDFPATH + 'autostrade' + str(i) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '.pdf' + ' ' + PDFPATH + 'autostrade' + str(i) + '.pdf'
                         os.system(cmdFinal)
                     else:
                         path = self.files[DizAziende['Autostrade'][i]][0]
-                        temp = path.split('/')
-                        cmdRename = 'mv -n "' + path + '" ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) +'.pdf'
-                        os.system(cmdRename)
-                        cmdFinal = 'mv -n ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) + '.pdf'
+                        temp = path.split('\\')
+                        os.rename(path, path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) +'.pdf')
+                        cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) + '.pdf' + ' ' + PDFPATH + 'autostrade' + str(i) + '-' + str(self.files[DizAziende['Autostrade'][i]][-1]) + '.pdf'
                         os.system(cmdFinal)
             else:
                 pass
@@ -457,10 +449,6 @@ class Ui_MainWindow(object):
         self.pushButton_3.setEnabled(False)
         MainWindow.repaint()
 
-def resource_path(relative_path):
-    if hasattr(sys, '_MEIPASS'):
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

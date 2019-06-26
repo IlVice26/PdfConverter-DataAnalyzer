@@ -100,9 +100,9 @@ class Ui_MainWindow(object):
         """
         
         if sys.platform.__contains__('win32'):
-            pass
+            wget.download(LINKPDFTOTEXTWIN, PATHWIN32 + '\\lib\\pdftotxt.exe' )
         else:
-            wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
+            wget.download(LINKPDFTOTEXTMACOS, PATHWIN32 + '\\lib\\pdftotxt')
 
 
     def checkFirstInstallationMac(self):
@@ -126,7 +126,7 @@ class Ui_MainWindow(object):
                 break
 
         if dirPCDA:
-            files = os.listdir(PATHMACOS)
+            files = os.listdir(PATHWIN32)
             
             for file in files:
                 if file == 'lib':
@@ -142,30 +142,29 @@ class Ui_MainWindow(object):
                 checkDir = True
             else:
                 if not dirLib:
-                    os.mkdir(PATHMACOS + '/lib')
+                    os.mkdir(PATHWIN32 + '\\lib')
                 if not dirPdf:
-                    os.mkdir(PATHMACOS + '/pdf')
+                    os.mkdir(PATHWIN32 + '\\pdf')
                 if not dirTxt:
-                    os.mkdir(PATHMACOS + '/txt')
+                    os.mkdir(PATHWIN32 + '\\txt')
                 if not dirOut:
-                    os.mkdir(PATHMACOS + '/output')
+                    os.mkdir(PATHWIN32 + '\\output')
 
             if checkDir:
-                fileExe = os.listdir(PATHMACOS + '/lib')
+                fileExe = os.listdir(PATHWIN32 + '\\lib')
                 for file in fileExe:
-                    if file == 'pdftotxt':
+                    if file == 'pdftotxt.exe':
                         checkExe = True
                         break
             
             if not checkExe:
-                wget.download(LINKPDFTOTEXTMACOS, PATHMACOS + '/lib/pdftotxt')
+                wget.download(LINKPDFTOTEXTMACOS, PATHWIN32 + '\\lib\\pdftotxt')
 
         else:
-            os.mkdir(PATHMACOS)
+            os.mkdir(PATHWIN32)
             for p in PATHSMACOS:
-                os.mkdir(PATHMACOS + p)
+                os.mkdir(PATHWIN32 + p)
             self.downloadUtilities()
-            os.popen('chmod +x ' + PATHMACOS + '/lib/pdftotxt')
 
 
 app = QtWidgets.QApplication(sys.argv)
