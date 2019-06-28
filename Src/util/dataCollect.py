@@ -20,6 +20,9 @@ elemautostrade = {}
 targheVWL = {}
 targheARVAL = {}
 
+targheDistributori = {}
+targheLeasing = {}
+
 boold = False
 
 
@@ -56,20 +59,29 @@ def datacollectunion():
                         
                         infotarga = []
                         date = []
-                        prezzi = []
+                        prezzi = 0
 
                         for i in range(1, len(lines)):
                             if (lines.index(line) + i) < len(lines):    
                                 newrow = str(lines.__getitem__(lines.index(line) + i)).split(' ')
                                 if not (newrow[0] == '' or newrow[0].__contains__('Targa:') or newrow[0] == '\n'):
                                     date.append(newrow[0][:6] + newrow[0][-2:])
-                                    prezzi.append(newrow[-1].replace('\n', ''))
+                                    temp7 = newrow[-1].replace('\n', '')
+                                    temp8 = temp7.replace(',', '.')
+                                    prezzi += float(temp8)
                                 else:
                                     if not (newrow[0] == '\n'):
                                         infotarga.append(date)
                                         infotarga.append(prezzi)
                                         infotarga.append('Union')
                                         targheUnion[targa] = infotarga
+                                        
+                                        keys = list(targheDistributori.keys())
+                                        if targa in keys:
+                                            targheDistributori[targa] += prezzi
+                                        else:
+                                            targheDistributori[targa] = prezzi
+
                                         break
                             else:
                                 break
@@ -100,7 +112,7 @@ def datacollectesso():
 
             infotarga = []
             date = []
-            prezzi = []
+            prezzi = 0
 
             for line in lines:
                 if (line.__contains__('gasolio') or line.__contains__('E-DIESEL')):
@@ -121,9 +133,15 @@ def datacollectesso():
                                             infotarga.append('Esso')
                                             targheEsso[targa] = infotarga
 
+                                            keys = list(targheDistributori.keys())
+                                            if targa in keys:
+                                                targheDistributori[targa] += prezzi
+                                            else:
+                                                targheDistributori[targa] = prezzi
+
                                         infotarga = []
                                         date = []
-                                        prezzi = []
+                                        prezzi = 0
 
                                         targa = temp1[-1]
 
@@ -138,8 +156,8 @@ def datacollectesso():
                                             if info[g] == 'data':
                                                 date.append(info[g + 1])
 
-                                        temp3 = info[-1].replace('.', ',')
-                                        prezzi.append(temp3.replace('\n', ''))
+                                        temp3 = info[-1].replace(',', '.')
+                                        prezzi += float(temp3.replace('\n', ''))
 
                                     else:
                                         
@@ -154,8 +172,8 @@ def datacollectesso():
                                             if info[g] == 'data':
                                                 date.append(info[g + 1])
 
-                                        temp3 = info[-1].replace('.', ',')
-                                        prezzi.append(temp3.replace('\n', ''))
+                                        temp3 = info[-1].replace(',', '.')
+                                        prezzi += float(temp3.replace('\n', ''))
 
                                 else:
                                     break
@@ -193,7 +211,7 @@ def datacollecteni():
                             infotarga = []
                             date = []
                             ore = []
-                            prezzi = []
+                            prezzi = 0
 
                             for i in range(1, len(lines)):
                                 newrow = str(lines.__getitem__(lines.index(line) + i)).split(' ')
@@ -220,15 +238,26 @@ def datacollecteni():
                                         tempPrezzo = dataLine[10].split(',')
                                         if (len(tempPrezzo) == 2):    
                                             if (len(tempPrezzo[0]) >= 2):
-                                                prezzi.append(dataLine[10])
+                                                temp8 = dataLine[10].replace(',', '.')
+                                                if len(temp8) > 6:
+                                                    prezzi += float(temp8[-5:])
+                                                else:
+                                                    prezzi += float(temp8)
                                             else:
-                                                prezzi.append(str(dataLine[11])[-6:])
+                                                temp8 = str(dataLine[11])[-6:]
+                                                temp9 = temp8.replace(',', '.')
+                                                if len(temp9) > 6:
+                                                    prezzi += float(temp9[-5:])
+                                                else:
+                                                    prezzi += float(temp9)
                                         elif (len(tempPrezzo) == 3):
-                                            prezzi.append(str(dataLine[10])[-6:])
+                                            temp8 = str(dataLine[10])[-6:]
+                                            temp9 = temp8.replace(',', '.')
+                                            prezzi += float(temp9)
                                         else:
                                             for j in range(len(dataLine)):
                                                 if (dataLine[j] == 'SELF'):
-                                                    prezzi.append(dataLine[j - 1])
+                                                    prezzi += float(dataLine[j - 1].replace(',', '.'))
                                                     break
 
                                 else:
@@ -240,6 +269,12 @@ def datacollecteni():
 
                                     # Assegno i dati salvati alla targa
                                     targheEni[targa] = infotarga
+
+                                    keys = list(targheDistributori.keys())
+                                    if targa in keys:
+                                        targheDistributori[targa] += prezzi
+                                    else:
+                                        targheDistributori[targa] = prezzi
                                     break
             except IndexError:
                 pass                
@@ -309,6 +344,12 @@ def parseVWL():
                 tot1 = float(root[1][1][i][6].text)
                 tot2 = float(root[1][1][i+1][6].text)
                 targheVWL[targa] = tot1 + tot2
+
+                keys = list(targheLeasing.keys())
+                if targa in keys:
+                    targheLeasing[targa] += tot1 + tot2
+                else:
+                    targheLeasing[targa] = tot1 + tot2
     else:
         pass
 
@@ -342,6 +383,12 @@ def parseARVAL():
                 tot1 = float(root[1][1][i][5].text)
                 tot2 = float(root[1][1][i+1][5].text)
                 targheARVAL[targa] = tot1 + tot2
+
+                keys = list(targheLeasing.keys())
+                if targa in keys:
+                    targheLeasing[targa] += tot1 + tot2
+                else:
+                    targheLeasing[targa] = tot1 + tot2
     else:
         pass     
 

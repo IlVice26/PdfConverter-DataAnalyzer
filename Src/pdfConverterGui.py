@@ -258,7 +258,7 @@ class Ui_MainWindow(object):
 
 
     def get_file(self):
-        name = QFileDialog.getOpenFileName(None, 'Open File', '', '*.pdf, *.xml')
+        name = QFileDialog.getOpenFileName(None, 'Open File', '', 'Pdf (*.pdf);; Xml (*.xml)')
         tempN = name[0]
 
         # Controllo se il file è stato selezionato
@@ -327,7 +327,6 @@ class Ui_MainWindow(object):
         self.dialogText.setText('')
         self.statusbar.showMessage('Salvato')
         MainWindow.repaint()
-        time.sleep(2)
         self.statusbar.showMessage('Avvia la conversione o seleziona un nuovo file')
         
 
@@ -531,9 +530,7 @@ class Ui_MainWindow(object):
 
         pdfConverter.start()
         dataCollect.start()
-        """
         exportData.exporttofile()
-        """
 
         msg = QMessageBox()
         msg.setIcon(QMessageBox.Information)
