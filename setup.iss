@@ -18,7 +18,7 @@ AppPublisher={#MyAppPublisher}
 AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
-DefaultDirName=C:\Program Files (x86)\{#MyAppName}
+DefaultDirName={userappdata}\{#MyAppName}
 DisableProgramGroupPage=yes
 InfoAfterFile=C:\Users\vicen\Documents\GitHub\PdfConverter-DataAnalyzer\readme
 ; The [Icons] "quicklaunchicon" entry uses {userappdata} but its [Tasks] entry has a proper IsAdminInstallMode Check.
