@@ -3,7 +3,7 @@ Pdf Converter & Data Analyzer by Fornace S.R.L
 Guida all'installazione:
 
 Se Python non e' installato sul proprio pc:
-- Entrare nella cartella d'installazione del programma (di default è C:\Program Files (x86)\Pdf Converter & Data Analyzer)
+- Entrare nella cartella d'installazione del programma (di default è C:\Users\*nomeutente*\AppData\Roaming)
 - Entrare nella cartella Python 3.7.3
 - Cliccare su 'python-3.7.3.exe' e procedere con l'installazione
 - ATTENZIONE! All'inizio del programma, spuntare l'opzione ADD TO PATH (E' importante questo passaggio)
