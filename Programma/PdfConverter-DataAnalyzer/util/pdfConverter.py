@@ -20,8 +20,6 @@ pathExe = 'lib\\pdftotxt.exe'
 filesToConvert = []
 
 
-
-
 def converttotxt():
     """
         Converte tutti file PDF presenti all'interno della cartella pdf

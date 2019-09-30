@@ -14,7 +14,11 @@ import util.dataCollect as dataCollect
 import openpyxl
 import time, datetime
 import util.setupGui as setupGui
+import time
 
+ts = time.time()
+s = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y'))
+st = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y_%H_%M_%S'))
 
 targheDis = dataCollect.targheDistributori
 targheLea = dataCollect.targheLeasing
@@ -144,9 +148,9 @@ def exporttofile():
             ordine = ws.cell(row = tempRow + i + 1, column = 7).value = '999999999'
             targa = ws.cell(row = tempRow + i + 1, column = 8).value = targa
     try:
-        wb.save(setupGui.PATHWIN32 + '\\output\\export.xlsx')
+        wb.save(setupGui.PATHWIN32 + '\\output\\export_' + str(st) +'.xlsx')
     except PermissionError:
-        wb.save(setupGui.PATHWIN32 + '\\output\\export1.xlsx')
+        wb.save(setupGui.PATHWIN32 + '\\output\\export1_' + str(st) + '.xlsx')
 
 def main():
     pdfConverter.start()
