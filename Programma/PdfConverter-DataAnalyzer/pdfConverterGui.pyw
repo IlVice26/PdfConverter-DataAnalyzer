@@ -5,6 +5,9 @@
 """
 
 import os
+import subprocess
+
+# Installazione librerie
 LIBRARIES = ['pyqt5', 'openpyxl']
 com_d = os.popen('python -m pip list --disable-pip-version-check')
 listd = com_d.read()
@@ -12,7 +15,7 @@ for i in range(len(LIBRARIES)):
     if LIBRARIES[i] in listd:
         pass
     else:
-        os.system('python -m pip install ' + LIBRARIES[i] + ' -q --disable-pip-version-check')
+        subprocess.Popen('python -m pip install ' + LIBRARIES[i] + ' -q --disable-pip-version-check', creationflags=0x08000000)
 
 import util.setupGui as setupGui
 import util.dataCollect as dataCollect
@@ -224,6 +227,7 @@ class Ui_MainWindow(object):
     def changeDatabase(self):
         db = QFileDialog.getOpenFileName(None, 'Seleziona il database', '', '*.xlsx')
         path = db[0]
+        print(path)
         if path == '':
             alert = QMessageBox()
             alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))
@@ -233,9 +237,7 @@ class Ui_MainWindow(object):
             alert.setWindowTitle('Attenzione')
             alert.exec_()
         else:
-            os.rename(path, 'database.xlsx')
-            temp = path.split('\\')
-            cmdFinal = 'move ' + path[:len(path) - len(temp[-1])] + 'database.xlsx' + ' ' + setupGui.PATHWIN32 + '\\database\\database.xlsx'
+            cmdFinal = 'copy /Y "' + path + '" ' + setupGui.PATHWIN32 + 'database.xlsx'
             os.system(cmdFinal)
             alert = QMessageBox()
             alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))
@@ -244,6 +246,8 @@ class Ui_MainWindow(object):
             alert.setIcon(QMessageBox.Information)
             alert.setWindowTitle('Informazione')
             alert.exec_()
+
+
 
     def closeWindow(self):
         """
