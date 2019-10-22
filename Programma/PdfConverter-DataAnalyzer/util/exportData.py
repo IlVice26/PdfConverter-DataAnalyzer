@@ -3,7 +3,7 @@
     - pdfConverter.py
     - dataCollect.py
     Salva tutti i dati raccolti all'interno di un file Excel (.xlsx)
-    Lavoro svolto per l'azienda Fornace S.R.L
+    Lavoro svolto da Elia Vicentini per l'azienda Fornace S.R.L
 """
 
 __version__ = '0.0.1'
@@ -16,9 +16,7 @@ import time, datetime
 import util.setupGui as setupGui
 import time
 
-ts = time.time()
-s = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y'))
-st = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y_%H_%M_%S'))
+
 
 targheDis = dataCollect.targheDistributori
 targheLea = dataCollect.targheLeasing
@@ -98,7 +96,7 @@ def exporttofile():
 
     tempRow = ws.max_row
 
-    for i in range(1, len(targheLeasing)):
+    for i in range(0, len(targheLeasing)):
         if targheLeasing[i] in targheDatabaseKeys:
             print('Targa esistente in database: ', targheLeasing[i])
 
@@ -143,10 +141,14 @@ def exporttofile():
             cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
             fornitore = ws.cell(row = tempRow + i + 1, column = 2).value = '5730000066'
             coge = ws.cell(row = tempRow + i + 1, column = 3).value = '7700409000'
-            valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = '999999999'
+            valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = tessere[tessereAutostrade[i]]
             valuta = ws.cell(row = tempRow + i + 1, column = 5).value = 'EUR'
             ordine = ws.cell(row = tempRow + i + 1, column = 7).value = '999999999'
             targa = ws.cell(row = tempRow + i + 1, column = 8).value = targa
+
+    ts = time.time()
+    st = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y_%H_%M_%S'))
+
     try:
         wb.save(setupGui.PATHWIN32 + '\\output\\export_' + str(st) +'.xlsx')
     except PermissionError:

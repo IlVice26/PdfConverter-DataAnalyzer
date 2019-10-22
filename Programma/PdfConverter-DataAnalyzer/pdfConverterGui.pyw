@@ -227,7 +227,6 @@ class Ui_MainWindow(object):
     def changeDatabase(self):
         db = QFileDialog.getOpenFileName(None, 'Seleziona il database', '', '*.xlsx')
         path = db[0]
-        print(path)
         if path == '':
             alert = QMessageBox()
             alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))
@@ -237,7 +236,7 @@ class Ui_MainWindow(object):
             alert.setWindowTitle('Attenzione')
             alert.exec_()
         else:
-            cmdFinal = 'copy /Y "' + path + '" ' + setupGui.PATHWIN32 + 'database.xlsx'
+            cmdFinal = 'copy /Y "' + path.replace('/', '\\') + '" ' + setupGui.PATHWIN32 + '\\database\\database.xlsx'
             os.system(cmdFinal)
             alert = QMessageBox()
             alert.setWindowIcon(QtGui.QIcon('img\\icon.png'))

@@ -310,8 +310,9 @@ def datacollectautostrade():
                     
                     temp3 = lines[lines.index(line) + 1].split('    ')
                     totaleCosto = temp3[-1].replace('\n', '')
+                    totaleCosto2 = totaleCosto.replace(',', '.')
 
-                    elemautostrade[tessera] = totaleCosto
+                    elemautostrade[tessera] = float(totaleCosto2.replace(' ', ''))
             file.close()
     else:
         pass
@@ -380,6 +381,7 @@ def parseARVAL():
 
             for i in range(0, len(root[1][1]) - 1, 2):   
                 targa = root[1][1][i][8][1].text
+                print(targa)
                 tot1 = float(root[1][1][i][5].text)
                 tot2 = float(root[1][1][i+1][5].text)
                 targheARVAL[targa] = tot1 + tot2
