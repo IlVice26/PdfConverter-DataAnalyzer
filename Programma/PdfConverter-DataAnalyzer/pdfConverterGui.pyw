@@ -4,9 +4,7 @@
     Lavoro svolto da Vicentini Elia
 """
 
-import os
-import subprocess
-
+"""
 # Installazione librerie
 LIBRARIES = ['pyqt5', 'openpyxl']
 com_d = os.popen('python -m pip list --disable-pip-version-check')
@@ -16,14 +14,17 @@ for i in range(len(LIBRARIES)):
         pass
     else:
         subprocess.Popen('python -m pip install ' + LIBRARIES[i] + ' -q --disable-pip-version-check', creationflags=0x08000000)
+"""
 
 import util.setupGui as setupGui
 import util.dataCollect as dataCollect
 import util.exportData as exportData
 import util.pdfConverter as pdfConverter
 
+import os
 import sys
 import time
+import subprocess
 
 from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtWidgets import QMessageBox, QApplication, QFileDialog, QCheckBox, QLineEdit, QLabel
@@ -111,6 +112,7 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(141, 165, 119, 18))
         self.comboBox.setObjectName("comboBox")
+        self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -213,6 +215,7 @@ class Ui_MainWindow(object):
         self.comboBox.setItemText(3, _translate("MainWindow", "Autostrade"))
         self.comboBox.setItemText(4, _translate("MainWindow", "VWL"))
         self.comboBox.setItemText(5, _translate("MainWindow", "Arval"))
+        self.comboBox.setItemText(6, _translate("MainWindow", "WEX"))
         self.pushButton_3.setText(_translate("MainWindow", "Avvia conversione"))
         self.pushButton_4.setText(_translate("MainWindow", "Elimina"))
         self.menuFile.setTitle(_translate("MainWindow", "Opzioni"))
@@ -354,6 +357,7 @@ class Ui_MainWindow(object):
         DizAziende['Autostrade'] = []
         DizAziende['VWL'] = []
         DizAziende['Arval'] = []
+        DizAziende['WEX'] = []
 
         # Conto le aziende
         for i in range(len(self.aziende)):
@@ -369,6 +373,8 @@ class Ui_MainWindow(object):
                 DizAziende['VWL'].append(i)
             if self.aziende[i] == 'Arval':
                 DizAziende['Arval'].append(i)
+            if self.aziende[i] == 'WEX':
+                DizAziende['WEX'].append(i)
 
         # Controllo della presenza del database
         canProceed = False
@@ -418,6 +424,7 @@ class Ui_MainWindow(object):
         lenAutostrade = len(DizAziende['Autostrade'])
         lenVWL = len(DizAziende['VWL'])
         lenArval = len(DizAziende['Arval'])
+        lenWEX = len(DizAziende['WEX'])
 
         # Pulizia dei file precedenti
         self.statusbar.showMessage('Eliminazione file precedenti')
@@ -506,6 +513,19 @@ class Ui_MainWindow(object):
                     else:
                         path = str(self.files[DizAziende['Arval'][i]][0]).replace('/', '\\')
                         cmdFinal = 'copy /Y "' + path + '" ' + TXTPATH + 'arval' + str(i) + '-' + str(self.files[DizAziende['Arval'][i]][-1]) + '.xml'
+                        os.system(cmdFinal)
+            else:
+                pass
+
+            if not lenWEX is 0:
+                for i in range(lenWEX):
+                    if self.files[DizAziende['WEX'][i]][1] == False:    
+                        path = str(self.files[DizAziende['WEX'][i]][0]).replace('/', '\\')
+                        cmdFinal = 'copy /Y "' + path + '" ' + TXTPATH + 'wex' + str(i) + '.xml'
+                        os.system(cmdFinal)
+                    else:
+                        path = str(self.files[DizAziende['WEX'][i]][0]).replace('/', '\\')
+                        cmdFinal = 'copy /Y "' + path + '" ' + TXTPATH + 'wex' + str(i) + '-' + str(self.files[DizAziende['WEX'][i]][-1]) + '.xml'
                         os.system(cmdFinal)
             else:
                 pass

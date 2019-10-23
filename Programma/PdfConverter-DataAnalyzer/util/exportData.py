@@ -48,11 +48,13 @@ def exporttofile():
         if len(str(cell.value)) == 7:
             targa = str(cell.value)
             telepass = ws.cell(row = i, column = 20).value
+            viacard = ws.cell(row = i, column = 21).value
             ordine = str(ws.cell(row = i, column = 24).value)
 
             infotarga = []
             infotarga.append(str(telepass))
             infotarga.append(ordine)
+            infotarga.append(str(viacard))
 
             targheDatabase[targa] = infotarga 
         else:
@@ -123,11 +125,18 @@ def exporttofile():
     for i in range(0, len(tessereAutostrade)):
         targa = ''
         for j in range(len(targheDatabaseKeys)):
+            # Controllo corrispondenza apparato telepass
             if str(tessereAutostrade[i]).__contains__(str(targheDatabase[targheDatabaseKeys[j]][0])):
                 if not str(targheDatabase[targheDatabaseKeys[j]][0]) == '':
                     targa = targheDatabaseKeys[j]
                     break
-        
+            # Se non è un targa, controllo corrispondenza tessera viacard
+            elif str(tessereAutostrade[i]).__contains__(str(targheDatabase[targheDatabaseKeys[j]][2])):
+                if not str(targheDatabase[targheDatabaseKeys[j]][2]) == '':
+                    targa = targheDatabaseKeys[j]
+                    break
+  
+        # Controllo se è un APPARATO TELEPASS o TESSERA VIACARD
         if not tessereAutostrade[i].__contains__('.'):
             if not targa == '':
                 cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
@@ -136,6 +145,14 @@ def exporttofile():
                 valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = tessere[tessereAutostrade[i]]
                 valuta = ws.cell(row = tempRow + i + 1, column = 5).value = 'EUR'
                 ordine = ws.cell(row = tempRow + i + 1, column = 7).value = targheDatabase[targa][-1]
+                targa = ws.cell(row = tempRow + i + 1, column = 8).value = targa
+            else:
+                cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
+                fornitore = ws.cell(row = tempRow + i + 1, column = 2).value = '5730000066'
+                coge = ws.cell(row = tempRow + i + 1, column = 3).value = '7700409000'
+                valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = tessere[tessereAutostrade[i]]
+                valuta = ws.cell(row = tempRow + i + 1, column = 5).value = 'EUR'
+                ordine = ws.cell(row = tempRow + i + 1, column = 7).value = '999999999'
                 targa = ws.cell(row = tempRow + i + 1, column = 8).value = targa
         elif tessereAutostrade.__contains__('.') or targa == '':
             cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
@@ -146,9 +163,11 @@ def exporttofile():
             ordine = ws.cell(row = tempRow + i + 1, column = 7).value = '999999999'
             targa = ws.cell(row = tempRow + i + 1, column = 8).value = targa
 
+    # Data e ora da aggiungere al file output
     ts = time.time()
     st = datetime.datetime.fromtimestamp(ts).strftime(('%d_%m_%Y_%H_%M_%S'))
 
+    # Export dati su file .xlsx
     try:
         wb.save(setupGui.PATHWIN32 + '\\output\\export_' + str(st) +'.xlsx')
     except PermissionError:

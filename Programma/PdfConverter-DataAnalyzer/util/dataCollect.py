@@ -307,12 +307,16 @@ def datacollectautostrade():
                 if line.__contains__('TESSERA VIACARD') or line.__contains__('APPARATO TELEPASS'):
                     temp2 = line.split('    ')
                     tessera = temp2[-1].replace('\n', '')
-                    
+                    if tessera.__contains__('.'):
+                        tessera2 = tessera.replace('.', '')
+                    else:
+                        tessera2 = tessera
+
                     temp3 = lines[lines.index(line) + 1].split('    ')
                     totaleCosto = temp3[-1].replace('\n', '')
                     totaleCosto2 = totaleCosto.replace(',', '.')
 
-                    elemautostrade[tessera] = float(totaleCosto2.replace(' ', ''))
+                    elemautostrade[tessera2] = float(totaleCosto2.replace(' ', ''))
             file.close()
     else:
         pass
