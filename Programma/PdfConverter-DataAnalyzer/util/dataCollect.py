@@ -5,7 +5,6 @@
 
 import os
 import util.setupGui as setupGui
-from PyQt5.QtWidgets import QMessageBox
 import xml.etree.ElementTree as ET
 
 
