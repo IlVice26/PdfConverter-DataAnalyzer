@@ -257,6 +257,7 @@ class Ui_MainWindow(object):
         """
         MainWindow.close()
 
+
     def checkBoxEncrypted(self):
         """
         Permette l'inserimento di una chiave per decriptare il file pdf
@@ -294,7 +295,6 @@ class Ui_MainWindow(object):
             self.statusbar.showMessage("Seleziona l'azienda e salva la scelta")
             MainWindow.repaint()
         else:
-
             # In caso l'utente non ha selezionato alcun file, verrà visualizzato un msg di errore
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)

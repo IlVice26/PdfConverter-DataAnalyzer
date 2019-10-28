@@ -444,7 +444,28 @@ def exportRows():
         file.write(str(targheARVAL[keys[i]]))
     file.close()
 
+
+def resetData():
+    """
+    Reset di tutti i dizionari
+    """
+    global targheEni
+    global targheUnion
+    global targheEsso
+    global elemautostrade
+    global targheVWL
+    global targheARVAL
+
+    targheEni = {}
+    targheUnion ={}
+    targheEsso = {}
+    elemautostrade = {}
+    targheVWL = {}
+    targheARVAL = {}
+
+
 def start():
+    resetData()
     datacollecteni()
     datacollectunion()
     datacollectesso()

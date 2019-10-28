@@ -17,7 +17,6 @@ import util.setupGui as setupGui
 import time
 
 
-
 targheDis = dataCollect.targheDistributori
 targheLea = dataCollect.targheLeasing
 tessere = dataCollect.elemautostrade
@@ -102,23 +101,23 @@ def exporttofile():
         if targheLeasing[i] in targheDatabaseKeys:
             print('Targa esistente in database: ', targheLeasing[i])
 
-            cdc = ws.cell(row = tempRow + i, column = 1).value = '7300000'
-            fornitore = ws.cell(row = tempRow + i, column = 2).value = '5730000066'
-            coge = ws.cell(row = tempRow + i, column = 3).value = '7700150000'
-            valfatt = ws.cell(row = tempRow + i, column = 4).value = targheLea[targheLeasing[i]]
-            valuta = ws.cell(row = tempRow + i, column = 5).value = 'EUR'
-            ordine = ws.cell(row = tempRow + i, column = 7).value = targheDatabase[targheLeasing[i]][-1]
-            targa = ws.cell(row = tempRow + i, column = 8).value = targheLeasing[i]
+            cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
+            fornitore = ws.cell(row = tempRow + i + 1, column = 2).value = '5730000066'
+            coge = ws.cell(row = tempRow + i + 1, column = 3).value = '7700150000'
+            valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = targheLea[targheLeasing[i]]
+            valuta = ws.cell(row = tempRow + i + 1, column = 5).value = 'EUR'
+            ordine = ws.cell(row = tempRow + i + 1, column = 7).value = targheDatabase[targheLeasing[i]][-1]
+            targa = ws.cell(row = tempRow + i + 1, column = 8).value = targheLeasing[i]
         else:
             print('Targa non esistente nel database', targheLeasing[i])
             # Assegnazione dati
-            cdc = ws.cell(row = tempRow + i, column = 1).value = '7300000'
-            fornitore = ws.cell(row = tempRow + i, column = 2).value = '5730000066'
-            coge = ws.cell(row = tempRow + i, column = 3).value = '999999999'
-            valfatt = ws.cell(row = tempRow + i, column = 4).value = targheLea[targheLeasing[i]]
-            valuta = ws.cell(row = tempRow + i, column = 5).value = 'EUR'
-            ordine = ws.cell(row = tempRow + i, column = 7).value = '999999999'
-            targa = ws.cell(row = tempRow + i, column = 8).value = targheLeasing[i]
+            cdc = ws.cell(row = tempRow + i + 1, column = 1).value = '7300000'
+            fornitore = ws.cell(row = tempRow + i + 1, column = 2).value = '5730000066'
+            coge = ws.cell(row = tempRow + i + 1, column = 3).value = '999999999'
+            valfatt = ws.cell(row = tempRow + i + 1, column = 4).value = targheLea[targheLeasing[i]]
+            valuta = ws.cell(row = tempRow + i + 1, column = 5).value = 'EUR'
+            ordine = ws.cell(row = tempRow + i + 1, column = 7).value = '999999999'
+            targa = ws.cell(row = tempRow + i + 1, column = 8).value = targheLeasing[i]
 
     tempRow = ws.max_row
 
