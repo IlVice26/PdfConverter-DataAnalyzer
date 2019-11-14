@@ -20,4 +20,4 @@ jobs:
         pip install pyqt5
     - name: Test with pytest
       run: |
-        python -c "print('ciao')"
+        python Programma/PdfConverter-DataAnalyzer/pdfConverterGui.pyw
